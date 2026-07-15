@@ -2,7 +2,7 @@
 
 ## 当前职责
 
-本项目只负责 MAX 视频包装。先读取 `references/max-video-profile.md` 和 `iteration/calibration-log.md`，再设计或修改视频。
+本项目只负责 MAX 视频包装。先读取 `docs/MAX视频制作SOP.md`、`references/max-video-profile.md` 和 `iteration/calibration-log.md`，再设计或修改视频。
 
 ## 边界
 
@@ -14,8 +14,10 @@
 
 ## 每次制作流程
 
-1. 确认视频比例、时长、平台、脚本、素材和交付格式。
-2. 读取品牌规则、禁用项、案例和最近校准记录。
-3. 在 Remotion Studio 预览关键帧和完整时间线。
-4. 完成静帧检查与成片渲染后再交付。
-5. 用户确认的稳定经验写入品牌规则、组件参数、案例或校准记录。
+1. 复制并填写 `templates/制作需求单.md`，确认视频比例、时长、平台、脚本、素材和交付格式。
+2. 读取品牌规则、禁用项、案例和最近校准记录；未确认内容保持“未校准”。
+3. 复制并完成 `templates/时间线装配表.md`，再进入 Remotion 制作。
+4. 在 Remotion Studio 预览关键帧和完整时间线。
+5. 使用 `templates/交付检查表.md` 完成静帧检查与完整成片渲染后再交付。
+6. 根因明确且修复已验证的技术问题写入 `iteration/technical-errata.md`。
+7. 用户确认的稳定经验写入品牌规则、组件参数、案例或校准记录；一次性偏好不得自动升级为长期规则。
