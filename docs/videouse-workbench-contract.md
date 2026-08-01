@@ -20,6 +20,7 @@ type WorkbenchProject = {
   currentVersionId: string | null;
   layout: LayoutState;
   exportHistory: ExportRecord[];
+  authority?: ProjectAuthority;
 };
 ```
 
@@ -28,6 +29,10 @@ type WorkbenchProject = {
 ## Files
 
 `project.json` is the canonical initialized project; `working-draft.json` is the autosaved current edit; `versions/vNNN.json` is immutable; `events.jsonl` appends visible Codex/user/system facts; `ui-state.json` holds panel ratios. `tasks/*.json` and `tasks/logs/*.log` persist background proxy/render lifecycle. `exports/` holds generated EDLs, atomically published render results and delivery packages.
+
+Opening is a two-step contract. `/api/projects/inspect` returns every EDL candidate with source/range/duration metadata and whether a working draft exists. The UI then sends the exact candidate path plus either `continue` or `new` to `/api/projects/open`. Creating a new working copy first archives the old draft under `workbench/drafts/`; it never merges a different selected EDL into an existing timeline.
+
+Transcript discovery does not require a source-ID filename alias. A single-source project binds a unique transcript automatically; multi-source projects use explicit metadata, filename identity and duration metadata. Duplicate copies are loaded only once. Any unresolved candidate remains visible as `needs-selection` and can be bound explicitly through the local UI.
 
 The canonical realpath supplied by the current open request is authoritative. Serialized `rootPath`, source metadata, transcript facts and unsafe proxy paths are never trusted as draft authority. Sources inside the opened project are authorized as project media; external EDL sources remain blocked until the user explicitly authorizes their exact canonical path and fingerprint. Missing, changed and relink-required sources remain unreadable until explicit authorization. Every media read and every proxy/render process boundary revalidates the source fingerprint. Proxy names are fixed SHA-256 encodings and every proxy read/write is constrained to the canonical `workbench/proxies/` directory.
 
@@ -38,3 +43,15 @@ The canonical realpath supplied by the current open request is authoritative. Se
 ## Interchange
 
 `toVideoUseEdl()` emits the established `sources`, `ranges`, `grade`, `overlays`, `subtitles`, and `total_duration_s` fields. Export validation compares count, source order, source timecodes and expected duration before writing. Every EDL, delivery-package, preview or rough-cut export first creates an immutable version; the export record and any background task reference that frozen version. Artifact filenames/directories include that version ID, so later or concurrent exports cannot overwrite an earlier record's target. Background completion always writes back to the project root captured when the task started. The CapCut exporter creates a stable package containing the EDL, a source manifest, decision references and an adapter status file whose `nativeDraftAdapter` is `experimental`.
+
+## Local runtime and feedback
+
+Run API and Web together with:
+
+```bash
+npm run workbench -- --with-web
+```
+
+The launcher probes loopback ports, keeps Vite on a strict selected port, injects the exact API origin before the React bundle loads, and logs the instance ID plus effective API/Web origins. The UI displays that instance and its currently bound project; no `?api=` query parameter is required.
+
+`feedback-summary.json` and `feedback-summary.md` are local-only project telemetry. They contain open duration, selected EDL, old-draft encounter, transcript-binding outcome, operation types, task/export status and error counts. They deliberately exclude transcript bodies, credentials and remote upload.

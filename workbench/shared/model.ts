@@ -31,6 +31,38 @@ export type DeletedSegment = TimelineSegment & { deletedAt: string; originalInde
 
 export type FileReference = { path: string; label?: string };
 export type TranscriptReference = FileReference & { sourceId?: string };
+export type TranscriptBindingStatus = "none" | "automatic" | "needs-selection" | "manual";
+export type TranscriptBindingIssue = {
+  path: string;
+  label: string;
+  candidateSourceIds: string[];
+};
+export type EdlCandidate = {
+  filename: string;
+  path: string;
+  modifiedAt: string;
+  sizeBytes: number;
+  sourceCount: number;
+  rangeCount: number;
+  durationSeconds: number;
+};
+export type ProjectAuthority = {
+  selectedEdlPath: string;
+  selectedEdlLabel: string;
+  draftSource: "selected-edl" | "working-draft" | "version";
+  transcriptBinding: TranscriptBindingStatus;
+  unresolvedTranscripts: TranscriptBindingIssue[];
+};
+export type ProjectInspection = {
+  rootPath: string;
+  name: string;
+  edlCandidates: EdlCandidate[];
+  workingDraft: {
+    exists: boolean;
+    selectedEdlPath?: string;
+    currentVersionId?: string | null;
+  };
+};
 export type ExternalAsset = { id: string; type: "caption" | "broll" | "sticker" | "overlay" | "audio"; path: string; sourceTool: string; start?: number; end?: number };
 export type VersionRecord = { id: string; name: string; parentVersionId: string | null; createdAt: string; summary: string; durationSeconds: number };
 export type LayoutState = { leftRatio: number; mediaRatio: number; timelineRatio: number };
@@ -64,6 +96,7 @@ export type WorkbenchProject = {
   currentVersionId: string | null;
   layout: LayoutState;
   exportHistory: ExportRecord[];
+  authority?: ProjectAuthority;
 };
 
 export type TimelineOperation =

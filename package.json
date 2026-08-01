@@ -33,7 +33,7 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src workbench && tsc -p tsconfig.workbench.json",
-    "workbench": "tsx workbench/server/index.ts",
+    "workbench": "node --import tsx workbench/server/index.ts",
     "workbench:web": "vite --config workbench/vite.config.ts",
     "workbench:build": "vite build --config workbench/vite.config.ts",
     "test:workbench": "vitest run --config workbench/vitest.config.ts"

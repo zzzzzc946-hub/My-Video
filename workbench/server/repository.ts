@@ -7,6 +7,7 @@ import {
   readdir,
   realpath,
   rename,
+  stat,
   unlink,
   writeFile,
 } from "node:fs/promises";
@@ -14,9 +15,10 @@ import { basename, dirname, join } from "node:path";
 import { createProject, validateProjectTimeline } from "../shared/timeline.js";
 import type {
   ExportRecord,
+  EdlCandidate,
+  ProjectInspection,
   SourceAuthorization,
   SourceMedia,
-  TranscriptReference,
   VersionRecord,
   VideoUseEdl,
   WorkbenchProject,
@@ -32,6 +34,7 @@ import {
 } from "./security.js";
 import { inspectMedia } from "./source-facts.js";
 import { proxyPathFor } from "./media.js";
+import { discoverTranscriptBindings } from "./transcript.js";
 
 const exists = async (path: string) =>
   access(path)
@@ -67,50 +70,43 @@ const atomicWriteJson = async (
   await rename(temporary, target);
 };
 
-const findEdl = async (root: string) => {
-  const file = (await readdir(root))
-    .filter((entry) => /^edl.*\.json$/i.test(entry))
-    .sort()
-    .at(-1);
-  if (!file) throw new Error("No VideoUse EDL found in selected project");
-  const path = safeChildPath(root, file);
-  const info = await lstat(path);
-  if (info.isSymbolicLink() || !info.isFile())
-    throw new Error(
-      "VideoUse EDL must be a regular file inside the project root",
-    );
-  return realpath(path);
-};
-
-const discoverTranscripts = async (
-  root: string,
-  sourceIds: string[],
-): Promise<TranscriptReference[]> => {
-  const directory = join(root, "transcripts");
-  if (!(await exists(directory))) return [];
-  const info = await lstat(directory);
-  if (
-    info.isSymbolicLink() ||
-    !info.isDirectory() ||
-    !isWithin(root, await realpath(directory))
-  )
-    throw new Error("Transcript directory escapes project root");
-  const references: TranscriptReference[] = [];
-  for (const file of (await readdir(directory))
-    .filter((entry) => entry.endsWith(".json"))
-    .sort()) {
-    const path = safeChildPath(directory, file);
-    const fileInfo = await lstat(path);
-    if (fileInfo.isSymbolicLink() || !fileInfo.isFile()) continue;
-    references.push({
-      path: await realpath(path),
-      label: file,
-      sourceId: sourceIds.find((id) =>
-        file.toLowerCase().startsWith(id.toLowerCase()),
-      ),
+const discoverEdlCandidates = async (root: string): Promise<EdlCandidate[]> => {
+  const candidates: EdlCandidate[] = [];
+  for (const filename of (await readdir(root)).filter((entry) => /^edl.*\.json$/i.test(entry)).sort()) {
+    const path = safeChildPath(root, filename);
+    const info = await lstat(path);
+    if (info.isSymbolicLink() || !info.isFile()) throw new Error("VideoUse EDL must be a regular file inside the project root");
+    const canonical = await realpath(path);
+    const edl = await secureJsonRead<VideoUseEdl>(root, canonical);
+    const fileStat = await stat(canonical);
+    const ranges = Array.isArray(edl.ranges) ? edl.ranges : [];
+    candidates.push({
+      filename,
+      path: canonical,
+      modifiedAt: fileStat.mtime.toISOString(),
+      sizeBytes: fileStat.size,
+      sourceCount: Object.keys(edl.sources ?? {}).length,
+      rangeCount: ranges.length,
+      durationSeconds: Number.isFinite(edl.total_duration_s)
+        ? edl.total_duration_s
+        : ranges.reduce((total, range) => total + Math.max(0, Number(range.end) - Number(range.start)), 0),
     });
   }
-  return references;
+  if (candidates.length === 0) throw new Error("No VideoUse EDL found in selected project");
+  return candidates;
+};
+
+const selectEdl = async (root: string, requested?: string) => {
+  const candidates = await discoverEdlCandidates(root);
+  if (!requested) {
+    if (candidates.length !== 1) throw new Error("Select an EDL explicitly before opening this project");
+    return candidates[0]!;
+  }
+  let canonical: string;
+  try { canonical = await realpath(requested); } catch { throw new Error("Selected EDL does not exist"); }
+  const selected = candidates.find((candidate) => candidate.path === canonical);
+  if (!selected) throw new Error("Selected EDL must be one of this project's discovered candidates");
+  return selected;
 };
 
 const directories = async (root: string) => {
@@ -248,8 +244,9 @@ const scanSource = async (
 const fromEdl = async (
   root: string,
   authorizations: SourceAuthorization[],
+  selectedEdl: EdlCandidate,
 ): Promise<WorkbenchProject> => {
-  const edl = await secureJsonRead<VideoUseEdl>(root, await findEdl(root));
+  const edl = await secureJsonRead<VideoUseEdl>(root, selectedEdl.path);
   const sourceIds = Object.keys(edl.sources ?? {});
   if (sourceIds.length === 0) throw new Error("VideoUse EDL has no sources");
   const authorizationById = new Map(
@@ -272,7 +269,15 @@ const fromEdl = async (
       reason: range.reason,
     })),
   });
-  project.transcripts = await discoverTranscripts(root, sourceIds);
+  const transcriptBinding = await discoverTranscriptBindings(root, sources);
+  project.transcripts = transcriptBinding.references;
+  project.authority = {
+    selectedEdlPath: selectedEdl.path,
+    selectedEdlLabel: selectedEdl.filename,
+    draftSource: "selected-edl",
+    transcriptBinding: transcriptBinding.status,
+    unresolvedTranscripts: transcriptBinding.unresolved,
+  };
   return project;
 };
 
@@ -333,8 +338,18 @@ const mergeDraft = async (
     name: facts.name,
     rootPath: facts.rootPath,
     sources,
-    transcripts: facts.transcripts,
+    transcripts: facts.transcripts.map((reference) => {
+      const saved = draft.transcripts.find((candidate) => candidate.path === reference.path);
+      return reference.sourceId ? reference : (saved ?? reference);
+    }),
     layout: normalizeLayout(draft.layout),
+    authority: {
+      ...facts.authority!,
+      draftSource: "working-draft",
+      transcriptBinding: facts.authority?.transcriptBinding === "needs-selection" && draft.authority?.transcriptBinding === "manual"
+        ? "manual"
+        : facts.authority!.transcriptBinding,
+    },
   };
   validateProjectTimeline(merged);
   return merged;
@@ -352,19 +367,48 @@ export const saveDraft = async (
   await atomicWriteJson(workbench, "ui-state.json", safeProject.layout);
 };
 
+export const inspectProject = async (candidateRoot: string): Promise<ProjectInspection> => {
+  const root = await canonicalProjectRoot(candidateRoot);
+  const edlCandidates = await discoverEdlCandidates(root);
+  const draftPath = join(root, "workbench", "working-draft.json");
+  let draft: WorkbenchProject | undefined;
+  if (await exists(draftPath)) draft = await secureJsonRead<WorkbenchProject>(root, draftPath);
+  return {
+    rootPath: root,
+    name: basename(root),
+    edlCandidates,
+    workingDraft: {
+      exists: Boolean(draft),
+      selectedEdlPath: draft?.authority?.selectedEdlPath,
+      currentVersionId: draft?.currentVersionId,
+    },
+  };
+};
+
+export type OpenProjectOptions = { edlPath?: string; draftMode?: "continue" | "new" };
+
+const archiveDraft = async (root: string, draft: WorkbenchProject) => {
+  const drafts = await ensureSecureDirectory(root, "workbench", "drafts");
+  const filename = `draft-${new Date().toISOString().replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}.json`;
+  await publishImmutableJson(drafts, filename, { ...draft, rootPath: root });
+};
+
 export const openProject = async (
   candidateRoot: string,
+  options: OpenProjectOptions = {},
 ): Promise<WorkbenchProject> => {
   const root = await canonicalProjectRoot(candidateRoot);
   const { workbench, versions } = await directories(root);
-  const facts = await fromEdl(root, await readAuthorizations(root, workbench));
   const draftPath = safeChildPath(workbench, "working-draft.json");
-  const merged = (await exists(draftPath))
-    ? await mergeDraft(
-        facts,
-        await secureJsonRead<WorkbenchProject>(root, draftPath),
-      )
-    : facts;
+  const savedDraft = (await exists(draftPath)) ? await secureJsonRead<WorkbenchProject>(root, draftPath) : undefined;
+  const requestedEdl = options.edlPath ?? savedDraft?.authority?.selectedEdlPath;
+  const selectedEdl = await selectEdl(root, requestedEdl);
+  const facts = await fromEdl(root, await readAuthorizations(root, workbench), selectedEdl);
+  const draftMode = options.draftMode ?? (savedDraft ? "continue" : "new");
+  if (draftMode === "continue" && savedDraft?.authority?.selectedEdlPath && savedDraft.authority.selectedEdlPath !== selectedEdl.path)
+    throw new Error("The selected EDL differs from the existing draft; create a new isolated draft instead");
+  if (draftMode === "new" && savedDraft) await archiveDraft(root, savedDraft);
+  const merged = draftMode === "continue" && savedDraft ? await mergeDraft(facts, savedDraft) : facts;
   const discovered = await discoverVersions(root, versions);
   const currentVersionId = discovered.records.some(
     (record) => record.id === merged.currentVersionId,
@@ -421,6 +465,41 @@ export const authorizeProjectSource = async (
   return updated;
 };
 
+export const bindProjectTranscript = async (
+  candidateRoot: string,
+  project: WorkbenchProject,
+  transcriptPath: string,
+  sourceId: string,
+) => {
+  const root = await canonicalProjectRoot(candidateRoot);
+  if (!project.sources.some((source) => source.id === sourceId))
+    throw new Error("Unknown transcript source");
+  const canonical = await realpath(transcriptPath);
+  const transcriptsRoot = await realpath(join(root, "transcripts"));
+  if (!isWithin(transcriptsRoot, canonical))
+    throw new Error("Transcript must remain inside the project transcript directory");
+  const info = await lstat(canonical);
+  if (info.isSymbolicLink() || !info.isFile())
+    throw new Error("Transcript must be a regular file");
+  const updated: WorkbenchProject = {
+    ...project,
+    transcripts: project.transcripts.map((reference) =>
+      reference.path === canonical ? { ...reference, sourceId } : reference,
+    ),
+    authority: project.authority
+      ? {
+          ...project.authority,
+          transcriptBinding: "manual",
+          unresolvedTranscripts: project.authority.unresolvedTranscripts.filter(
+            (issue) => issue.path !== canonical,
+          ),
+        }
+      : project.authority,
+  };
+  await saveDraft(root, updated);
+  return updated;
+};
+
 export const snapshot = async (
   candidateRoot: string,
   project: WorkbenchProject,
@@ -461,7 +540,8 @@ export const restoreVersion = async (
     root,
     safeChildPath(versions, `${versionId}.json`),
   );
-  const facts = await fromEdl(root, await readAuthorizations(root, workbench));
+  const selectedEdl = await selectEdl(root, version.authority?.selectedEdlPath);
+  const facts = await fromEdl(root, await readAuthorizations(root, workbench), selectedEdl);
   const restored = await mergeDraft(facts, {
     ...version,
     rootPath: root,

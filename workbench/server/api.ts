@@ -19,6 +19,8 @@ import {
 } from "./exporters.js";
 import {
   authorizeProjectSource,
+  bindProjectTranscript,
+  inspectProject,
   openProject,
   restoreVersion,
   saveDraft,
@@ -35,6 +37,7 @@ import {
   fingerprintMedia,
   sourceIsReadable,
 } from "./source-facts.js";
+import { recordFeedback } from "./feedback.js";
 
 const readBody = async (request: AsyncIterable<Buffer>) => {
   const chunks: Buffer[] = [];
@@ -128,6 +131,9 @@ export const createApiServer = (
     const persisted = await appendAuditEvent(currentRoot, event);
     publish("audit", persisted);
     return persisted;
+  };
+  const feedback = async (input: Parameters<typeof recordFeedback>[1]) => {
+    if (currentRoot) await recordFeedback(currentRoot, input).catch(() => undefined);
   };
   const persistSourceState = async (
     source: SourceMedia,
@@ -300,7 +306,7 @@ export const createApiServer = (
           current ?? { error: "No project open" },
         );
       if (request.method === "GET" && request.url === "/api/health")
-        return reply(200, { ok: true, instanceId });
+        return reply(200, { ok: true, instanceId, projectRoot: currentRoot });
       if (request.method === "GET" && request.url?.startsWith("/api/media/")) {
         if (!current) return reply(409, { error: "No project open" });
         const source = current.sources.find(
@@ -371,8 +377,24 @@ export const createApiServer = (
         return reply(200, cues);
       }
       const body = await readBody(request);
+      if (request.method === "POST" && request.url === "/api/projects/inspect") {
+        const startedAt = performance.now();
+        const inspection = await inspectProject(String(body.root));
+        return reply(200, {
+          ...inspection,
+          inspectionDurationMs: Math.round(performance.now() - startedAt),
+        });
+      }
       if (request.method === "POST" && request.url === "/api/projects/open") {
-        current = await openProject(String(body.root));
+        const startedAt = performance.now();
+        const inspection = await inspectProject(String(body.root));
+        current = await openProject(String(body.root), {
+          edlPath: typeof body.edlPath === "string" ? body.edlPath : undefined,
+          draftMode:
+            body.draftMode === "continue" || body.draftMode === "new"
+              ? body.draftMode
+              : undefined,
+        });
         currentRoot = current.rootPath;
         const openedRoot = currentRoot;
         taskRegistry = await TaskRegistry.create(openedRoot, async (task) => {
@@ -389,6 +411,11 @@ export const createApiServer = (
               versionId: task.versionId,
             },
           });
+          await recordFeedback(openedRoot, {
+            type: `task.${task.kind}`,
+            status: task.status,
+            error: task.error,
+          }).catch(() => undefined);
           if (currentRoot === openedRoot) {
             publish("task.updated", task);
             publish("audit", event);
@@ -398,6 +425,13 @@ export const createApiServer = (
           type: "project.opened",
           actor: "user",
           summary: `Opened ${current.name}`,
+        });
+        await feedback({
+          type: "project.opened",
+          durationMs: Math.round(performance.now() - startedAt),
+          edl: current.authority?.selectedEdlLabel,
+          draftEncountered: inspection.workingDraft.exists,
+          transcriptBinding: current.authority?.transcriptBinding,
         });
         publish("project.updated", current);
         return reply(200, current);
@@ -442,6 +476,23 @@ export const createApiServer = (
         publish("project.updated", current);
         return reply(200, current);
       }
+      if (request.method === "POST" && request.url === "/api/transcripts/bind") {
+        current = await bindProjectTranscript(
+          currentRoot,
+          current,
+          String(body.path),
+          String(body.sourceId),
+        );
+        await audit({
+          type: "transcript.bound",
+          actor: "user",
+          summary: `已将转写绑定到 ${String(body.sourceId)}`,
+          payload: { path: String(body.path), sourceId: String(body.sourceId) },
+        });
+        await feedback({ type: "operation.transcript-bind" });
+        publish("project.updated", current);
+        return reply(200, current);
+      }
       if (request.method === "POST" && request.url === "/api/operations") {
         const operation = body.operation as TimelineOperation;
         current = applyTimelineOperation(current, operation);
@@ -454,6 +505,7 @@ export const createApiServer = (
           summary: `${operation.type} ${target}`,
           payload: operation as unknown as Record<string, unknown>,
         });
+        await feedback({ type: `operation.${operation.type}` });
         publish("project.updated", current);
         return reply(200, current);
       }
@@ -466,6 +518,7 @@ export const createApiServer = (
           summary: "Panel layout updated",
           payload: current.layout as unknown as Record<string, unknown>,
         });
+        await feedback({ type: "operation.layout" });
         publish("project.updated", current);
         return reply(200, current);
       }
@@ -645,6 +698,7 @@ export const createApiServer = (
             summary: `${kind} started`,
             payload: { taskId: task.id, versionId: frozen.versionId },
           });
+          await feedback({ type: "export.render", status: "queued" });
           return reply(202, task);
         }
         if (kind !== "videouse-edl" && kind !== "capcut-package")
@@ -680,6 +734,7 @@ export const createApiServer = (
             versionId: frozen.versionId,
           } as unknown as Record<string, unknown>,
         });
+        await feedback({ type: `export.${kind}`, status: "ready" });
         return reply(200, { ...result, versionId: frozen.versionId });
       }
       return reply(404, { error: "Not found" });
@@ -705,5 +760,6 @@ export const createApiServer = (
         http.close((error) => (error ? reject(error) : resolve())),
       ),
     http,
+    instanceId,
   };
 };

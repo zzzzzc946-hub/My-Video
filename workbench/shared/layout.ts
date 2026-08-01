@@ -1,6 +1,6 @@
 import type { LayoutState } from "./model.js";
 
-export const DEFAULT_LAYOUT: LayoutState = { leftRatio: 0.23, mediaRatio: 0.42, timelineRatio: 0.32 };
+export const DEFAULT_LAYOUT: LayoutState = { leftRatio: 0.29, mediaRatio: 0.325, timelineRatio: 0.34 };
 
 export const normalizeLayout = (value: unknown): LayoutState => {
   if (!value || typeof value !== "object") throw new Error("Layout must be an object");
