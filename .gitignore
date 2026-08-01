@@ -8,3 +8,4 @@ out
 
 # Local isolated worktrees used for feature implementation.
 .worktrees/
+.playwright-cli/
