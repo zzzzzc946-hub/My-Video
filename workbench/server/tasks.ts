@@ -67,6 +67,11 @@ export class TaskRegistry {
     const part = safeChildPath(this.directory, `${task.id}.json.part`);
     await writeFile(part, `${JSON.stringify(task, null, 2)}\n`, "utf8");
     const { rename } = await import("node:fs/promises");
+    if (task.status === "complete" || task.status === "failed") {
+      await this.onUpdate(task);
+      await rename(part, target);
+      return;
+    }
     await rename(part, target);
     await this.onUpdate(task);
   }
