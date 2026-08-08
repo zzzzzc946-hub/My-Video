@@ -1,5 +1,5 @@
 {
-  "knowledgeBaseRoot": "/Volumes/YourNAS/CHEN BRAIN",
-  "mediaRoot": "/Volumes/YourNAS/MAX视频素材库",
-  "deliveryRoot": "/Volumes/YourNAS/MAX视频交付"
+  "knowledgeBaseRoot": "/Users/your-name/Documents/CHEN BRAIN",
+  "mediaRoot": "/Users/your-name/Documents/Codex/MAX视频本地资料/原片",
+  "deliveryRoot": "/Users/your-name/Documents/Codex/MAX视频本地资料/交付"
 }
