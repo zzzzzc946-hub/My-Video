@@ -2,9 +2,21 @@ node_modules
 dist
 .DS_Store
 .env
+config/nas-paths.json
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Per-machine VideoUse media caches and generated delivery artifacts.
+# Keep decisions, EDLs and source manifests versionable when explicitly added.
+**/video-use/workbench/proxies/
+**/video-use/workbench/thumbnails/
+**/video-use/workbench/tasks/
+**/video-use/workbench/exports/
+**/video-use/clips_*/
+**/video-use/*preview*.mp4
+**/video-use/*.part.mp4
+**/video-use/*.log
 
 # Local isolated worktrees used for feature implementation.
 .worktrees/

@@ -28,6 +28,12 @@ npm run workbench:web   # UI:  http://127.0.0.1:5173
 
 MAX 长期品牌规则继续保存在 `references/max-video-profile.md`，用户确认的校准结论保存在 `iteration/calibration-log.md`。单条视频偏好和技术错误不得自动写入长期品牌规则。
 
+## 双机与 NAS 使用
+
+本项目支持同一人通过两台电脑继续使用同一套 MAX × VideoUse × Codex 工作流：私有 GitHub 仓库同步规则、Skill、源码和文本决策；NAS 挂载个人知识库、原片与交付文件；依赖、代理和缓存留在各自电脑本地。
+
+从 [双机同步与 NAS 目录规范](docs/双机同步与NAS目录规范.md) 开始，再按 [双机切换清单](docs/双机切换清单.md) 操作。NAS 路径使用 [配置模板](config/nas-paths.example.json)，复制出的 `config/nas-paths.json` 不会进入 Git。
+
 ## 项目位置
 
 ```text
