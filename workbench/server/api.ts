@@ -1,5 +1,6 @@
 import { createReadStream } from "node:fs";
-import { stat } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { lstat, realpath, stat } from "node:fs/promises";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { applyTimelineOperation } from "../shared/timeline.js";
@@ -8,6 +9,7 @@ import type {
   AuditEvent,
   BackgroundTask,
   ExportRecord,
+  FinalVideoExportRequest,
   SourceMedia,
   TimelineOperation,
   WorkbenchProject,
@@ -15,6 +17,7 @@ import type {
 import {
   exportCapCutPackage,
   exportVideoUseEdl,
+  renderFinalVideoUse,
   renderVideoUse,
 } from "./exporters.js";
 import {
@@ -31,7 +34,7 @@ import { generateProxy, mediaContentType } from "./media.js";
 import { parseScribeTranscript } from "./transcript.js";
 import { appendAuditEvent, readAuditEvents } from "./audit.js";
 import { TaskRegistry } from "./tasks.js";
-import { authorizeProxyFile } from "./security.js";
+import { authorizeProxyFile, ensureSecureDirectory, isWithin } from "./security.js";
 import {
   assertProjectSourcesReadable,
   fingerprintMedia,
@@ -107,6 +110,78 @@ type TaskServices = {
     quality: "preview" | "rough-cut",
     logPath: string,
   ) => Promise<{ outputPath?: string; summary?: string }>;
+  renderFinalVideo: (
+    project: WorkbenchProject,
+    root: string,
+    request: FinalVideoExportRequest,
+    logPath: string,
+    update: (next: {
+      progress: number;
+      phase: NonNullable<BackgroundTask["phase"]>;
+      detail: string;
+    }) => Promise<void>,
+  ) => Promise<{ outputPath?: string; summary?: string }>;
+  chooseExportDirectory: () => Promise<string | null>;
+  revealInFinder: (path: string) => Promise<void>;
+};
+
+const revealInFinder = (path: string) =>
+  new Promise<void>((resolve, reject) => {
+    if (process.platform !== "darwin")
+      return reject(new Error("Finder reveal is only available on macOS"));
+    const child = spawn("open", ["-R", path], { stdio: "ignore" });
+    child.once("error", reject);
+    child.once("exit", (code) =>
+      code === 0 ? resolve() : reject(new Error("Finder could not reveal this export")),
+    );
+  });
+
+const chooseMacExportDirectory = () =>
+  new Promise<string | null>((resolve, reject) => {
+    if (process.platform !== "darwin")
+      return reject(new Error("Directory chooser is only available on macOS"));
+    const child = spawn("osascript", [
+      "-e",
+      'POSIX path of (choose folder with prompt "选择导出位置")',
+    ], { stdio: ["ignore", "pipe", "pipe"] });
+    const output: Buffer[] = [];
+    const errors: Buffer[] = [];
+    child.stdout!.on("data", (chunk) => output.push(chunk));
+    child.stderr!.on("data", (chunk) => errors.push(chunk));
+    child.once("error", reject);
+    child.once("exit", (code) => {
+      if (code === 0) return resolve(Buffer.concat(output).toString("utf8").trim() || null);
+      const message = Buffer.concat(errors).toString("utf8").trim();
+      if (message.includes("User canceled")) return resolve(null);
+      reject(new Error(message || "Directory chooser did not complete"));
+    });
+  });
+
+const parseFinalVideoExportRequest = (value: unknown): FinalVideoExportRequest | null => {
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as Record<string, unknown>;
+  const title = typeof candidate.title === "string" ? candidate.title.trim() : "";
+  const format = candidate.format;
+  const resolution = candidate.resolution;
+  const frameRate = candidate.frameRate;
+  const quality = candidate.quality;
+  if (!title || title.length > 160) return null;
+  if (!["mp4", "webm", "mov"].includes(String(format))) return null;
+  if (!["source", "1080p", "720p"].includes(String(resolution))) return null;
+  if (frameRate !== "source" && frameRate !== 30 && frameRate !== 60) return null;
+  if (!["preview", "standard", "high"].includes(String(quality))) return null;
+  const destinationDirectory =
+    typeof candidate.destinationDirectory === "string"
+      ? candidate.destinationDirectory
+      : undefined;
+  return {
+    title,
+    format: format as FinalVideoExportRequest["format"],
+    resolution: resolution as FinalVideoExportRequest["resolution"],
+    frameRate: frameRate as FinalVideoExportRequest["frameRate"],
+    quality: quality as FinalVideoExportRequest["quality"],
+    ...(destinationDirectory ? { destinationDirectory } : {}),
+  };
 };
 
 export const createApiServer = (
@@ -120,6 +195,7 @@ export const createApiServer = (
   const instanceId = crypto.randomUUID();
   let current: WorkbenchProject | null = null;
   let currentRoot: string | null = null;
+  const approvedExportDirectories = new Set<string>();
   let taskRegistry: TaskRegistry | null = null;
   const subscribers = new Set<import("node:http").ServerResponse>();
   const publish = (type: string, payload: unknown) =>
@@ -396,6 +472,7 @@ export const createApiServer = (
               : undefined,
         });
         currentRoot = current.rootPath;
+        approvedExportDirectories.clear();
         const openedRoot = currentRoot;
         taskRegistry = await TaskRegistry.create(openedRoot, async (task) => {
           const event = await appendAuditEvent(openedRoot, {
@@ -438,6 +515,34 @@ export const createApiServer = (
       }
       if (!current || !currentRoot)
         return reply(409, { error: "No project open" });
+      if (request.method === "POST" && request.url === "/api/exports/reveal") {
+        const candidate = typeof body.path === "string" ? body.path : "";
+        const exports = await ensureSecureDirectory(
+          currentRoot,
+          "workbench",
+          "exports",
+        );
+        if (!candidate) return reply(400, { error: "Missing export path" });
+        const info = await lstat(candidate).catch(() => undefined);
+        if (!info || info.isSymbolicLink() || (!info.isFile() && !info.isDirectory()))
+          return reply(404, { error: "Generated export was not found" });
+        const canonical = await realpath(candidate);
+        if (
+          !isWithin(exports, canonical) &&
+          ![...approvedExportDirectories].some((directory) =>
+            isWithin(directory, canonical),
+          )
+        )
+          return reply(403, { error: "Only current-project exports can be revealed" });
+        await (serviceOverrides.revealInFinder ?? revealInFinder)(canonical);
+        await audit({
+          type: "export.revealed",
+          actor: "user",
+          summary: "Revealed generated export in Finder",
+          payload: { path: canonical },
+        });
+        return reply(200, { ok: true });
+      }
       if (request.method === "POST" && request.url === "/api/events") {
         const actor = body.actor as AuditEvent["actor"];
         const event = await audit({
@@ -618,6 +723,60 @@ export const createApiServer = (
         request.url?.startsWith("/api/export/")
       ) {
         const kind = request.url.split("/").at(-1);
+        if (kind === "choose-directory") {
+          const chosen = await (
+            serviceOverrides.chooseExportDirectory ?? chooseMacExportDirectory
+          )();
+          if (!chosen) return reply(200, { cancelled: true });
+          const info = await lstat(chosen);
+          if (info.isSymbolicLink() || !info.isDirectory())
+            return reply(400, { error: "Selected export location must be a regular folder" });
+          const directory = await realpath(chosen);
+          approvedExportDirectories.add(directory);
+          return reply(200, { path: directory });
+        }
+        if (kind === "final-video") {
+          const exportRequest = parseFinalVideoExportRequest(body.request);
+          if (!exportRequest)
+            return reply(400, { error: "Invalid final-video export settings" });
+          if (
+            exportRequest.destinationDirectory &&
+            !approvedExportDirectories.has(exportRequest.destinationDirectory)
+          )
+            return reply(403, { error: "Export location was not selected in this workbench session" });
+          try {
+            await revalidateCurrentProjectSources();
+          } catch (error) {
+            return reply(409, {
+              error: error instanceof Error ? error.message : "Sources require relinking",
+            });
+          }
+          const root = currentRoot;
+          const frozen = await freezeForExport(kind);
+          const projectAtStart = frozen.project;
+          const render = serviceOverrides.renderFinalVideo ?? ((project: WorkbenchProject, projectRoot: string, settings: FinalVideoExportRequest, logPath: string, update: Parameters<TaskServices["renderFinalVideo"]>[4]) => renderFinalVideoUse(projectRoot, project, settings, logPath, update));
+          const taskId = crypto.randomUUID();
+          const createdAt = new Date().toISOString();
+          await recordExport({ id: taskId, kind: "final-video", createdAt, path: "", status: "queued", versionId: frozen.versionId });
+          const task = await taskRegistry!.start(
+            "render-final-video",
+            async ({ logPath, update }) => {
+              try {
+                await assertProjectSourcesReadable(projectAtStart);
+                const result = await render(projectAtStart, root, exportRequest, logPath, update);
+                await recordExport({ id: taskId, kind: "final-video", createdAt, path: result.outputPath ?? "", status: "ready", versionId: frozen.versionId }, root);
+                return result;
+              } catch (error) {
+                await recordExport({ id: taskId, kind: "final-video", createdAt, path: "", status: "failed", versionId: frozen.versionId }, root);
+                throw error;
+              }
+            },
+            { id: taskId, versionId: frozen.versionId },
+          );
+          await audit({ type: "render.started", actor: "user", summary: "final-video started", payload: { taskId: task.id, versionId: frozen.versionId, exportRequest } });
+          await feedback({ type: "export.final-video", status: "queued" });
+          return reply(202, task);
+        }
         if (kind === "render-preview" || kind === "render-rough-cut") {
           try {
             await revalidateCurrentProjectSources();

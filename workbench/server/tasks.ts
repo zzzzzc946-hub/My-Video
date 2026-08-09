@@ -4,6 +4,10 @@ import type { BackgroundTask } from "../shared/model.js";
 import { canonicalProjectRoot, ensureSecureDirectory, safeChildPath } from "./security.js";
 
 type TaskResult = { outputPath?: string; summary?: string } | void;
+type TaskProgressUpdate = Pick<
+  BackgroundTask,
+  "progress" | "phase" | "detail"
+>;
 
 export class TaskRegistry {
   readonly tasks = new Map<string, BackgroundTask>();
@@ -31,7 +35,7 @@ export class TaskRegistry {
       if (info.isSymbolicLink() || !info.isFile()) continue;
       try {
         const task = JSON.parse(await readFile(path, "utf8")) as BackgroundTask;
-        if (`${task.id}.json` !== filename || !["proxy", "render-preview", "render-rough-cut"].includes(task.kind)) continue;
+        if (`${task.id}.json` !== filename || !["proxy", "render-preview", "render-rough-cut", "render-final-video"].includes(task.kind)) continue;
         this.tasks.set(task.id, task);
         if (task.status === "queued" || task.status === "running") {
           Object.assign(task, { status: "failed", updatedAt: new Date().toISOString(), error: "Task was interrupted before reaching a terminal state" });
@@ -76,11 +80,28 @@ export class TaskRegistry {
     await this.onUpdate(task);
   }
 
-  async start(kind: BackgroundTask["kind"], runner: (context: { logPath: string; log: (line: string) => Promise<void> }) => Promise<TaskResult>, options: { id?: string; versionId?: string } = {}) {
+  async start(
+    kind: BackgroundTask["kind"],
+    runner: (context: {
+      logPath: string;
+      log: (line: string) => Promise<void>;
+      update: (next: TaskProgressUpdate) => Promise<void>;
+    }) => Promise<TaskResult>,
+    options: { id?: string; versionId?: string } = {},
+  ) {
     const id = options.id ?? randomUUID();
     const now = new Date().toISOString();
     const logPath = safeChildPath(this.logsDirectory, `${id}.log`);
-    const task: BackgroundTask = { id, kind, status: "queued", createdAt: now, updatedAt: now, logPath, versionId: options.versionId };
+    const task: BackgroundTask = {
+      id,
+      kind,
+      status: "queued",
+      createdAt: now,
+      updatedAt: now,
+      logPath,
+      versionId: options.versionId,
+      progress: 0,
+    };
     this.tasks.set(id, task);
     await writeFile(logPath, "", { flag: "wx" });
     await this.persist(task);
@@ -90,15 +111,41 @@ export class TaskRegistry {
           Object.assign(task, { status: "running", updatedAt: new Date().toISOString() });
           await this.persist(task);
           const log = async (line: string) => { await appendFile(logPath, `${line}\n`, "utf8"); };
-          const result = await runner({ logPath, log });
-          Object.assign(task, { status: "complete", updatedAt: new Date().toISOString(), ...(result ?? {}) });
-          await this.persist(task);
+          const update = async (next: TaskProgressUpdate) => {
+            const progress =
+              next.progress === undefined
+                ? task.progress
+                : Math.max(0, Math.min(100, Math.round(next.progress)));
+            Object.assign(task, {
+              ...next,
+              ...(progress === undefined ? {} : { progress }),
+              updatedAt: new Date().toISOString(),
+            });
+            await this.persist(task);
+          };
+          const result = await runner({ logPath, log, update });
+          const completed: BackgroundTask = {
+            ...task,
+            status: "complete",
+            progress: 100,
+            phase: "verifying",
+            updatedAt: new Date().toISOString(),
+            ...(result ?? {}),
+          };
+          await this.persist(completed);
+          Object.assign(task, completed);
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
           await appendFile(logPath, `${message}\n`, "utf8").catch(() => undefined);
-          Object.assign(task, { status: "failed", updatedAt: new Date().toISOString(), error: message });
-          delete task.outputPath;
-          await this.persist(task);
+          const failed: BackgroundTask = {
+            ...task,
+            status: "failed",
+            updatedAt: new Date().toISOString(),
+            error: message,
+          };
+          delete failed.outputPath;
+          await this.persist(failed);
+          Object.assign(task, failed);
         }
       })();
     });

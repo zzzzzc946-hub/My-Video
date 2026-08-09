@@ -25,9 +25,9 @@
 
 **Interfaces:** 产生对 `renderFinalVideoUse()`、`isFastDeliveryRequest()`、最终导出请求、进度事件和网页交互的测试约束。
 
-- [ ] 用 apply_patch 从主电脑逐文件迁入测试和契约，不迁入实现。
-- [ ] 运行 `npm run test:workbench -- workbench/tests/exporters.test.ts workbench/tests/api.test.ts workbench/tests/tasks.test.ts workbench/tests/playback.test.ts workbench/tests/export-form.test.ts workbench/tests/export-interaction.test.ts workbench/tests/export-message.test.ts workbench/tests/zoom.test.ts`；预期因缺少最终导出接口或网页模块失败。
-- [ ] 保存首个确定性失败输出，作为 Task 2 的对照。
+- [x] 用 apply_patch 从主电脑逐文件迁入测试和契约，不迁入实现。
+- [x] 运行 `npm run test:workbench -- workbench/tests/exporters.test.ts workbench/tests/api.test.ts workbench/tests/tasks.test.ts workbench/tests/playback.test.ts workbench/tests/export-form.test.ts workbench/tests/export-interaction.test.ts workbench/tests/export-message.test.ts workbench/tests/zoom.test.ts`；预期因缺少最终导出接口或网页模块失败。
+- [x] 保存首个确定性失败输出，作为 Task 2 的对照。
 
 ### Task 2: 迁入快速最终导出与网页实现
 
@@ -35,9 +35,9 @@
 
 **Interfaces:** 实现 `isFastDeliveryRequest(project, request)`、`renderPlanForFinalVideo(project, request)`、`fastDeliveryEncodeArguments(project, output)`、`renderFinalVideoUse(candidateRoot, project, request, logPath, onProgress?)` 与可见导出状态。
 
-- [ ] 逐文件比较主电脑与隔离分支，并只用 apply_patch 迁入上述实现。
-- [ ] 重跑 Task 1 的测试命令，预期 PASS。
-- [ ] 运行 `npm run lint` 和 `npm run workbench:build`，预期均以 0 退出且不启动真实渲染。
+- [x] 逐文件比较主电脑与隔离分支，并只用 apply_patch 迁入上述实现。
+- [x] 重跑 Task 1 的测试命令，预期 PASS。
+- [x] 运行 `npm run lint` 和 `npm run workbench:build`，预期均以 0 退出且不启动真实渲染。
 
 ### Task 3: 对齐规则、发布并生成接入指令
 
@@ -45,8 +45,8 @@
 
 **Interfaces:** 另一台 Codex 的工具路由：纯粗剪最终候选从工作台发起；复杂项目回退常规路径。
 
-- [ ] 用 `rg` 检查 Skill、契约和导出器均声明快速条件、最终视频导出、`h264_videotoolbox` 与兼容回退。
-- [ ] 用 `git diff --check` 与 `git status --short` 确认没有素材、制作记录或 NAS 路径进入待提交集。
+- [x] 用 `rg` 检查 Skill、契约和导出器均声明快速条件、最终视频导出、`h264_videotoolbox` 与兼容回退。
+- [x] 用 `git diff --check` 与 `git status --short` 确认没有素材、制作记录或 NAS 路径进入待提交集。
 - [ ] 提交并推送工作台、Skill、契约、规格和计划到 `origin/codex/two-computer-sync`。
 - [ ] 输出另一台电脑指令，仅允许克隆、检出、创建被忽略 NAS 配置、运行测试和启动工作台；禁止真实渲染和改动 NAS 原片。
 

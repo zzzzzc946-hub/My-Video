@@ -563,8 +563,15 @@ describe("loopback API", () => {
 
     const packaged = (await fetch(`${address}/api/export/capcut-package`, {
       method: "POST",
-    }).then((response) => response.json())) as { versionId?: string };
+    }).then((response) => response.json())) as { versionId?: string; path: string };
     expect(packaged.versionId).toMatch(/^v\d{3}$/);
+    const packageManifest = JSON.parse(
+      await readFile(join(packaged.path, "package-manifest.json"), "utf8"),
+    ) as { files: Record<string, string> };
+    expect(packageManifest.files.jianyingImport).toBeUndefined();
+    await expect(
+      access(join(packaged.path, "jianying-import.fcpxml")),
+    ).rejects.toMatchObject({ code: "ENOENT" });
     const renderTask = (await fetch(`${address}/api/export/render-preview`, {
       method: "POST",
     }).then((response) => response.json())) as {
@@ -603,6 +610,100 @@ describe("loopback API", () => {
         }),
       ]),
     );
+  });
+
+  it("queues a configured final-video export from a frozen version", async () => {
+    const root = await fixture();
+    let received: Record<string, unknown> | undefined;
+    const progressUpdates: Array<{ progress: number; phase: string }> = [];
+    const server = createApiServer([], {
+      chooseExportDirectory: async () => root,
+      renderFinalVideo: async (_project, _root, request, _logPath, update) => {
+        received = request as unknown as Record<string, unknown>;
+        await update({ progress: 42, phase: "encoding", detail: "正在编码 MP4" });
+        progressUpdates.push({ progress: 42, phase: "encoding" });
+        return {
+          outputPath: join(root, "workbench", "exports", "MAX.mp4"),
+          summary: "delivery encoded",
+        };
+      },
+    });
+    const address = await server.listen();
+    cleanups.push(() => server.close());
+    await fetch(`${address}/api/projects/open`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ root }),
+    });
+    const selectedDirectory = await fetch(
+      `${address}/api/export/choose-directory`,
+      { method: "POST" },
+    );
+    expect(selectedDirectory.status).toBe(200);
+    const selected = (await selectedDirectory.json()) as { path: string };
+
+    const queued = await fetch(`${address}/api/export/final-video`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        request: {
+          title: "MAX",
+          format: "mp4",
+          resolution: "1080p",
+          frameRate: 60,
+          quality: "standard",
+          destinationDirectory: selected.path,
+        },
+      }),
+    });
+    expect(queued.status).toBe(202);
+    const task = (await queued.json()) as { id: string; versionId?: string };
+    await waitFor(
+      async () =>
+        fetch(`${address}/api/tasks/${task.id}`).then((response) =>
+          response.json(),
+        ) as Promise<{ status: string }>,
+      (current) => current.status === "complete",
+    );
+    expect(task.versionId).toMatch(/^v\d{3}$/);
+    expect(progressUpdates).toEqual([{ progress: 42, phase: "encoding" }]);
+    expect(received).toMatchObject({
+      title: "MAX",
+      format: "mp4",
+      resolution: "1080p",
+      frameRate: 60,
+      quality: "standard",
+      destinationDirectory: selected.path,
+    });
+  });
+
+  it("reveals only a generated project export in Finder", async () => {
+    const root = await fixture();
+    let revealedPath = "";
+    const server = createApiServer([], {
+      revealInFinder: async (path) => {
+        revealedPath = path;
+      },
+    });
+    const address = await server.listen();
+    cleanups.push(() => server.close());
+    await fetch(`${address}/api/projects/open`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ root }),
+    });
+    const generated = join(root, "workbench", "exports", "jianying-package");
+    await mkdir(generated, { recursive: true });
+
+    const response = await fetch(`${address}/api/exports/reveal`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ path: generated }),
+    });
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true });
+    expect(revealedPath).toMatch(/workbench\/exports\/jianying-package$/);
   });
 
   it("keeps immutable export artifacts for separate frozen versions", async () => {

@@ -66,11 +66,19 @@ export type ProjectInspection = {
 export type ExternalAsset = { id: string; type: "caption" | "broll" | "sticker" | "overlay" | "audio"; path: string; sourceTool: string; start?: number; end?: number };
 export type VersionRecord = { id: string; name: string; parentVersionId: string | null; createdAt: string; summary: string; durationSeconds: number };
 export type LayoutState = { leftRatio: number; mediaRatio: number; timelineRatio: number };
-export type ExportRecord = { id: string; kind: "project" | "videouse-edl" | "render-job" | "capcut-package"; createdAt: string; path: string; status: "ready" | "queued" | "failed"; versionId: string };
+export type ExportRecord = { id: string; kind: "project" | "videouse-edl" | "render-job" | "final-video" | "capcut-package"; createdAt: string; path: string; status: "ready" | "queued" | "failed"; versionId: string };
+export type FinalVideoExportRequest = {
+  title: string;
+  destinationDirectory?: string;
+  format: "mp4" | "webm" | "mov";
+  resolution: "source" | "1080p" | "720p";
+  frameRate: "source" | 30 | 60;
+  quality: "preview" | "standard" | "high";
+};
 export type AuditEvent = { id: string; timestamp: string; type: string; actor: "user" | "codex" | "system"; summary: string; payload?: Record<string, unknown> };
 export type BackgroundTask = {
   id: string;
-  kind: "proxy" | "render-preview" | "render-rough-cut";
+  kind: "proxy" | "render-preview" | "render-rough-cut" | "render-final-video";
   status: "queued" | "running" | "complete" | "failed";
   createdAt: string;
   updatedAt: string;
@@ -79,6 +87,9 @@ export type BackgroundTask = {
   summary?: string;
   error?: string;
   versionId?: string;
+  progress?: number;
+  phase?: "rough-cut" | "encoding" | "verifying";
+  detail?: string;
 };
 
 export type WorkbenchProject = {
