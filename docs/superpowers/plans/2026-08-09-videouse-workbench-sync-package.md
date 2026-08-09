@@ -47,8 +47,8 @@
 
 - [x] 用 `rg` 检查 Skill、契约和导出器均声明快速条件、最终视频导出、`h264_videotoolbox` 与兼容回退。
 - [x] 用 `git diff --check` 与 `git status --short` 确认没有素材、制作记录或 NAS 路径进入待提交集。
-- [ ] 提交并推送工作台、Skill、契约、规格和计划到 `origin/codex/two-computer-sync`。
-- [ ] 输出另一台电脑指令，仅允许克隆、检出、创建被忽略 NAS 配置、运行测试和启动工作台；禁止真实渲染和改动 NAS 原片。
+- [x] 提交并推送工作台、Skill、契约、规格和计划到 `origin/codex/two-computer-sync`。
+- [x] 输出另一台电脑指令，仅允许克隆、检出、创建被忽略 NAS 配置、运行测试和启动工作台；禁止真实渲染和改动 NAS 原片。
 
 ## Plan Self-Review
 
