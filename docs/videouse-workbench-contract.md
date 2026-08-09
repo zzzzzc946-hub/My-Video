@@ -46,6 +46,10 @@ The canonical realpath supplied by the current open request is authoritative. Se
 
 Final-video export persists observable task progress and delivers it through `task.updated` SSE events. The VideoUse rough-cut stage derives 0–75% from renderer segment starts; FFmpeg delivery encoding derives 75–98% from its machine-readable output time. 98% means the rendered file is being probed and atomically published. Only after output validation and publication does the task registry record 100%; no unobservable percentage is invented.
 
+## Review delivery profile
+
+Every file delivered to MAX for review uses the locked **1080P / 30 fps** profile (vertical MAX projects: `1080×1920`, 30 fps). The review-export UI does not expose resolution or frame-rate choices. Source files, original EDLs and explicitly requested master deliveries remain separate from this review profile.
+
 ## Local runtime and feedback
 
 Run API and Web together with:

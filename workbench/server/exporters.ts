@@ -140,7 +140,7 @@ export const isFastDeliveryRequest = (
 ) =>
   request.format === "mp4" &&
   request.resolution === "1080p" &&
-  request.frameRate === "source" &&
+  request.frameRate === 30 &&
   request.quality === "standard" &&
   project.sources.length === 1 &&
   project.timeline.segments.length > 0 &&
@@ -164,7 +164,7 @@ const fastDeliveryFilter = (project: WorkbenchProject) => {
     const duration = segment.sourceOut - segment.sourceIn;
     const fadeOut = Math.max(0, duration - 0.03).toFixed(3);
     return [
-      `[0:v]trim=start=${segment.sourceIn.toFixed(3)}:end=${segment.sourceOut.toFixed(3)},setpts=PTS-STARTPTS,scale=-2:1920[v${index}]`,
+      `[0:v]trim=start=${segment.sourceIn.toFixed(3)}:end=${segment.sourceOut.toFixed(3)},setpts=PTS-STARTPTS,scale=-2:1920,fps=30[v${index}]`,
       `[0:a]atrim=start=${segment.sourceIn.toFixed(3)}:end=${segment.sourceOut.toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:st=0:d=0.03,afade=t=out:st=${fadeOut}:d=0.03[a${index}]`,
     ];
   });

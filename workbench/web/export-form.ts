@@ -6,6 +6,6 @@ export const defaultFinalVideoExport = (
   title,
   format: "mp4",
   resolution: "1080p",
-  frameRate: "source",
+  frameRate: 30,
   quality: "standard",
 });

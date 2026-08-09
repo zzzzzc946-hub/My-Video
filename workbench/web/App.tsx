@@ -167,7 +167,7 @@ export const App = () => {
   const usesFastDelivery =
     finalExport.format === "mp4" &&
     finalExport.resolution === "1080p" &&
-    finalExport.frameRate === "source" &&
+    finalExport.frameRate === 30 &&
     finalExport.quality === "standard" &&
     project?.sources.length === 1 &&
     project.assets.length === 0;
@@ -783,17 +783,17 @@ export const App = () => {
             </header>
             <div className="export-sections">
               <section className="export-section">
-                <div className="export-section-heading"><div><h3>成片导出</h3><p>导出前自动保存一个可回退版本；进度按真实渲染和编码状态更新。</p></div><span className="delivery-badge">VideoUse</span></div>
+                <div className="export-section-heading"><div><h3>审片版导出</h3><p>固定 1080P、30 fps；导出前自动保存一个可回退版本，进度按真实渲染和编码状态更新。</p></div><span className="delivery-badge">VideoUse</span></div>
                 <label>标题 / 文件名<input value={finalExport.title} onChange={(event) => setFinalExport((current) => ({ ...current, title: event.target.value }))} /></label>
                 <label>导出位置<div className="export-directory"><output>{selectedExportDirectory ?? `${project.rootPath}/workbench/exports`}</output><button className="secondary" onClick={() => void chooseExportDestination()}>选择文件夹</button></div></label>
                 <div className="export-fields">
-                  <label>分辨率<select value={finalExport.resolution} onChange={(event) => setFinalExport((current) => ({ ...current, resolution: event.target.value as FinalVideoExportRequest["resolution"] }))}><option value="source">原始</option><option value="1080p">1080P</option><option value="720p">720P</option></select></label>
-                  <label>帧率<select value={finalExport.frameRate} onChange={(event) => setFinalExport((current) => ({ ...current, frameRate: event.target.value === "source" ? "source" : Number(event.target.value) as 30 | 60 }))}><option value="source">原始</option><option value="30">30 fps</option><option value="60">60 fps</option></select></label>
+                  <label>审片分辨率<output>1080P</output></label>
+                  <label>审片帧率<output>30 fps</output></label>
                   <label>格式<select value={finalExport.format} onChange={(event) => setFinalExport((current) => ({ ...current, format: event.target.value as FinalVideoExportRequest["format"] }))}><option value="mp4">MP4（推荐）</option><option value="mov">MOV</option><option value="webm">WebM</option></select></label>
                   <label>质量<select value={finalExport.quality} onChange={(event) => setFinalExport((current) => ({ ...current, quality: event.target.value as FinalVideoExportRequest["quality"] }))}><option value="preview">预览</option><option value="standard">标准粗剪</option><option value="high">高质量</option></select></label>
                 </div>
                 <p className="quality-note">{exportQualityNote[finalExport.quality]}</p>
-                <p className="fast-export-note">{usesFastDelivery ? "默认快速导出：MP4、1080P、原始帧率、标准质量，将使用 Mac 硬件编码并只生成一次成片。" : "当前设置将使用兼容导出路径，以保持所选格式、帧率、质量或后期资产正确。"}</p>
+                <p className="fast-export-note">{usesFastDelivery ? "标准审片导出：MP4、1080P、30 fps、标准质量，将使用 Mac 硬件编码并只生成一次成片。" : "审片规格已固定为 1080P、30 fps；当前素材或后期资产需走兼容导出路径。"}</p>
                 {finalExportTask?.status === "running" || finalExportTask?.status === "queued" ? <div className="export-task-progress" role="status"><div><b>{exportPhaseLabel(finalExportTask.phase)}</b><span>{finalExportTask.progress ?? 0}%</span></div><div className="export-progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={finalExportTask.progress ?? 0}><span style={{ width: `${finalExportTask.progress ?? 0}%` }} /></div><small>{finalExportTask.detail ?? "正在准备导出"}</small></div> : null}
                 {finalExportTask?.status === "failed" ? <div className="export-error" role="alert"><b>导出失败</b><span>{finalExportTask.error ?? "导出任务未完成"}</span><button className="secondary" onClick={() => void startFinalExport()}>重试</button></div> : null}
                 {lastExport?.kind === "final-video" ? <div className="export-result" role="status"><b>成片导出成功</b><span>生成位置</span><code>{lastExport.path}</code><div><button className="secondary" onClick={() => void revealExportInFinder()}>📁 在 Finder 中显示</button><button className="secondary" onClick={() => void copyExportPath()}>复制路径</button></div></div> : null}

@@ -97,7 +97,7 @@ it("maps FFmpeg machine-readable output time to the delivery encoding range", ()
   expect(encodingProgressFromLine("frame=42", 10)).toBeUndefined();
 });
 
-it("routes the default single-source rough-cut delivery through one VideoToolbox encode", () => {
+it("routes the fixed 1080P 30fps single-source review export through one VideoToolbox encode", () => {
   const project = createProject({
     name: "fixture",
     rootPath: "/tmp/fixture",
@@ -111,7 +111,7 @@ it("routes the default single-source rough-cut delivery through one VideoToolbox
     title: "MAX",
     format: "mp4" as const,
     resolution: "1080p" as const,
-    frameRate: "source" as const,
+    frameRate: 30 as const,
     quality: "standard" as const,
   };
 
@@ -131,6 +131,9 @@ it("routes the default single-source rough-cut delivery through one VideoToolbox
   expect(fastDeliveryEncodeArguments(project, "output.mp4").join(" ")).toContain(
     "trim=start=4.000:end=6.000",
   );
+  expect(fastDeliveryEncodeArguments(project, "output.mp4").join(" ")).toContain(
+    "fps=30",
+  );
   expect(fastDeliveryEncodeArguments(project, "output.mp4").at(-1)).toBe("output.mp4");
 });
 
@@ -143,6 +146,9 @@ it("keeps non-default delivery specifications on the compatible render path", ()
   });
   expect(isFastDeliveryRequest(project, {
     title: "MAX", format: "webm", resolution: "1080p", frameRate: "source", quality: "standard",
+  })).toBe(false);
+  expect(isFastDeliveryRequest(project, {
+    title: "MAX", format: "mp4", resolution: "1080p", frameRate: "source", quality: "standard",
   })).toBe(false);
   expect(renderPlanForFinalVideo(project, {
     title: "MAX", format: "mp4", resolution: "1080p", frameRate: "source", quality: "high",
