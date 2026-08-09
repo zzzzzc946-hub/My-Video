@@ -88,8 +88,8 @@
 - [x] 在当前电脑现有知识库 clone 执行 `git status`、`git pull --ff-only` 并确认规则 SHA。
 - [x] 在测试分支或独立临时 clone 新增一个候选样例，验证其只触及 `08｜规则候选收件箱/open/`；不改现有正式 `00–07`。
 - [x] 验证第二台电脑指令只要求 clone、拉取、创建候选和报告，不授权正式规则改写、NAS 反向同步或强推。
-- [ ] 提交并推送视频工程文档/Skill 到 `codex/two-computer-sync`；规则仓库保持独立提交历史。
-- [ ] 输出两台电脑最终使用口令与 NAS 镜像触发口令。
+- [x] 提交并推送视频工程文档/Skill 到 `codex/two-computer-sync`；规则仓库保持独立提交历史。
+- [x] 输出两台电脑最终使用口令与 NAS 镜像触发口令。
 
 ## Plan Self-Review
 
