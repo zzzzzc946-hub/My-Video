@@ -1,0 +1,29 @@
+name: quality-gate
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: zzzzzc946-hub/CHEN-BRAIN
+          path: CHEN-BRAIN
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm ci
+      - run: npm run test:workbench
+        env:
+          CHEN_BRAIN_ROOT: ${{ github.workspace }}/CHEN-BRAIN/03｜CHEN操盘手系统/03｜MAX剪辑系统
+      - run: npm run lint
+      - run: npm run build
