@@ -1,0 +1,63 @@
+# VideoUse Workbench Data Contract (v1)
+
+All state below is stored under `<video-use-project>/workbench/`; no source asset or existing VideoUse file is overwritten.
+
+## Canonical project
+
+```ts
+type WorkbenchProject = {
+  schemaVersion: 1;
+  projectId: string;
+  name: string;
+  rootPath: string;
+  sources: SourceMedia[];
+  timeline: { trackId: "av-main"; segments: TimelineSegment[] };
+  deletedSegments: DeletedSegment[];
+  transcripts: TranscriptReference[];
+  decisions: FileReference[];
+  assets: ExternalAsset[];
+  versions: VersionRecord[];
+  currentVersionId: string | null;
+  layout: LayoutState;
+  exportHistory: ExportRecord[];
+  authority?: ProjectAuthority;
+};
+```
+
+`TimelineSegment` always contains a `sourceId`, `sourceIn`, `sourceOut`, `outputIn`, and `outputOut`. Output time is recalculated from segment order, never manually trusted. `DeletedSegment` retains its original placement and deletion reason. `SourceMedia` has `originalPath`, optional `proxyPath`, duration, fingerprint and link state.
+
+## Files
+
+`project.json` is the canonical initialized project; `working-draft.json` is the autosaved current edit; `versions/vNNN.json` is immutable; `events.jsonl` appends visible Codex/user/system facts; `ui-state.json` holds panel ratios. `tasks/*.json` and `tasks/logs/*.log` persist background proxy/render lifecycle. `exports/` holds generated EDLs, atomically published render results and delivery packages.
+
+Opening is a two-step contract. `/api/projects/inspect` returns every EDL candidate with source/range/duration metadata and whether a working draft exists. The UI then sends the exact candidate path plus either `continue` or `new` to `/api/projects/open`. Creating a new working copy first archives the old draft under `workbench/drafts/`; it never merges a different selected EDL into an existing timeline.
+
+Transcript discovery does not require a source-ID filename alias. A single-source project binds a unique transcript automatically; multi-source projects use explicit metadata, filename identity and duration metadata. Duplicate copies are loaded only once. Any unresolved candidate remains visible as `needs-selection` and can be bound explicitly through the local UI.
+
+The canonical realpath supplied by the current open request is authoritative. Serialized `rootPath`, source metadata, transcript facts and unsafe proxy paths are never trusted as draft authority. Sources inside the opened project are authorized as project media; external EDL sources remain blocked until the user explicitly authorizes their exact canonical path and fingerprint. Missing, changed and relink-required sources remain unreadable until explicit authorization. Every media read and every proxy/render process boundary revalidates the source fingerprint. Proxy names are fixed SHA-256 encodings and every proxy read/write is constrained to the canonical `workbench/proxies/` directory.
+
+## Operations
+
+`trim`, `delete`, `restore`, `reorder`, `split`, and validated whole-timeline replacement for session undo/redo are checked before persistence against authoritative probed source duration; timecodes must be finite numbers, non-negative and have positive duration. The editor supports clip drag reorder, draggable in/out handles, edit-point snapping, playhead split and session undo/redo. Mutating operations record an event, save the draft, and publish an SSE `project.updated` event. Layout updates use the same persistence/audit path. A snapshot copies the canonical draft and has a parent version ID; restoring only creates a new draft and never rewrites a historical snapshot.
+
+## Interchange
+
+`toVideoUseEdl()` emits the established `sources`, `ranges`, `grade`, `overlays`, `subtitles`, and `total_duration_s` fields. Export validation compares count, source order, source timecodes and expected duration before writing. Every EDL, delivery-package, preview or rough-cut export first creates an immutable version; the export record and any background task reference that frozen version. Artifact filenames/directories include that version ID, so later or concurrent exports cannot overwrite an earlier record's target. Background completion always writes back to the project root captured when the task started. The stable workbench delivery package contains the EDL, source manifest, decision references, project version data and adapter status. It does not contain FCPXML and does not promise Jianying project import; `nativeDraftAdapter` is `unsupported` until a version-locked writer passes a real Jianying open verification.
+
+Final-video export persists observable task progress and delivers it through `task.updated` SSE events. The VideoUse rough-cut stage derives 0–75% from renderer segment starts; FFmpeg delivery encoding derives 75–98% from its machine-readable output time. 98% means the rendered file is being probed and atomically published. Only after output validation and publication does the task registry record 100%; no unobservable percentage is invented.
+
+## Review delivery profile
+
+Every file delivered to MAX for review uses the locked **1080P / 30 fps** profile (vertical MAX projects: `1080×1920`, 30 fps). The review-export UI does not expose resolution or frame-rate choices. Source files, original EDLs and explicitly requested master deliveries remain separate from this review profile.
+
+## Local runtime and feedback
+
+Run API and Web together with:
+
+```bash
+npm run workbench -- --with-web
+```
+
+The launcher probes loopback ports, keeps Vite on a strict selected port, injects the exact API origin before the React bundle loads, and logs the instance ID plus effective API/Web origins. The UI displays that instance and its currently bound project; no `?api=` query parameter is required.
+
+`feedback-summary.json` and `feedback-summary.md` are local-only project telemetry. They contain open duration, selected EDL, old-draft encounter, transcript-binding outcome, operation types, task/export status and error counts. They deliberately exclude transcript bodies, credentials and remote upload.

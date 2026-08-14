@@ -1,5 +1,20 @@
 # MAX 视频项目
 
+## VideoUse 通用剪辑工作台
+
+工作台是独立的本地浏览器界面：它读取任意包含 `edl*.json` 的 VideoUse 项目，并只在该项目下创建 `workbench/`（草稿、版本、事件和导出）。源素材和原 VideoUse 文件不会被覆盖。
+
+```bash
+npm run workbench       # API: http://127.0.0.1:4317
+npm run workbench:web   # UI:  http://127.0.0.1:5173
+```
+
+使用其他本机 Web 端口时，必须精确配置来源，例如 `WORKBENCH_ALLOWED_ORIGINS=http://127.0.0.1:5181 WORKBENCH_PORT=4318 npm run workbench`；API 不接受通配 CORS。Web 可用 `?api=http://127.0.0.1:4318` 指向该明确实例。
+
+在 UI 输入 VideoUse 项目的绝对路径并打开。v1 支持单条音画绑定轨的删除/恢复/调序、跨素材连续播放、时间线缩放与定位、自动草稿、版本快照/恢复、持久事件审计、后台代理与 VideoUse 粗剪渲染任务、VideoUse EDL 导出和稳定剪映交付包。代理与渲染先写 `.part`，媒体验证通过后才原子发布最终文件。
+
+代理生成和真正的 VideoUse 渲染由 VideoUse 后端执行，工作台以持久任务记录、日志、SSE 状态和可查询终态呈现过程。剪映原生草稿适配器刻意未作为“通用导入”实现：本机没有可验证的剪映应用版本与版本锁定草稿夹具，因此稳定包只交付相对引用清单、EDL、来源清单、决策引用和明确的实验性适配器状态。只有取得安装版本、对应原生草稿样本与导入回归夹具后才重新启用该适配器。
+
 这是 MAX 视频包装的独立 Remotion 项目。当前完成的是技术底座，不代表最终 MAX 视觉风格。
 
 ## 制作 SOP
@@ -12,6 +27,12 @@
 - [技术错题集](iteration/technical-errata.md)：只记录根因明确且修复已经验证的技术问题。
 
 MAX 长期品牌规则继续保存在 `references/max-video-profile.md`，用户确认的校准结论保存在 `iteration/calibration-log.md`。单条视频偏好和技术错误不得自动写入长期品牌规则。
+
+## 双机与 NAS 使用
+
+本项目支持同一人通过两台电脑继续使用同一套 MAX × VideoUse × Codex 工作流：每台电脑在本地运行知识库、原片与交付工作副本；私有 GitHub 的 `codex/two-computer-sync` 分支同步 Skill、源码和文本决策；NAS 只在规则确认、用户明确要求或切换电脑前作为阶段镜像。依赖、代理、缓存与凭据始终留在各自电脑本地。
+
+从 [双机同步与 NAS 目录规范](docs/双机同步与NAS目录规范.md) 开始，再按 [双机切换清单](docs/双机切换清单.md) 操作。NAS 路径使用 [配置模板](config/nas-paths.example.json)，复制出的 `config/nas-paths.json` 不会进入 Git。
 
 ## 项目位置
 

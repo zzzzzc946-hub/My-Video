@@ -200,3 +200,4 @@ Expected: `git diff --check` 无输出；工作区没有本计划之外的未提
 git add docs/MAX视频制作SOP.md templates iteration/technical-errata.md README.md AGENTS.md
 git commit -m "docs: refine MAX video SOP validation"
 ```
+
