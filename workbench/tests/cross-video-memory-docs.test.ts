@@ -2,7 +2,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { expect, it } from "vitest";
 
-const brainRoot = "/Users/chen.zip/Documents/CHEN BRAIN/03｜CHEN操盘手系统/03｜MAX剪辑系统";
+const brainRoot = process.env.CHEN_BRAIN_ROOT
+  ?? "/Users/chen.zip/Documents/CHEN BRAIN/03｜CHEN操盘手系统/03｜MAX剪辑系统";
 
 it("defines a compact archive and index for prior video retrospectives", async () => {
   const [archiveGuide, template, index] = await Promise.all([
