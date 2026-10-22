@@ -1,0 +1,728 @@
+{
+  "snapshot_date": "2026-10-22",
+  "base_repository_commit": "9dc5deb5c830af588a22a4202531c21d03cdd217",
+  "local_project_commit": "e91de93ccaeedccc1c53b8364ef584b73aa21d31",
+  "note": "当前工作文件快照，包含已授权的未提交内容；源指纹在可移植路径替换前计算。主项目与外部知识库未修改。 分享版另排除生成的 dist，并规范 Markdown 换行空白。",
+  "files": [
+    {
+      "source": "current-skill/SKILL.md",
+      "destination": "skills/max-jianji-skill/SKILL.md",
+      "source_sha256": "01ea44d7a75d5b1f2dcb3f149006a46db28c57ee5411b47091c26c69f4f6bea2"
+    },
+    {
+      "source": "current-skill/references/0059-self-actualization-iterations.md",
+      "destination": "skills/max-jianji-skill/references/0059-self-actualization-iterations.md",
+      "source_sha256": "039924cf72caa9a97db77add6ccccc017b35476ebb5eb8c667fad6a81725d043"
+    },
+    {
+      "source": "current-skill/references/0112-photo-social-dividend-iterations.md",
+      "destination": "skills/max-jianji-skill/references/0112-photo-social-dividend-iterations.md",
+      "source_sha256": "4cc65b9053f75a1cce7e32da809a009bd2a67b6c5fc754467603b093d6441ec3"
+    },
+    {
+      "source": "current-skill/references/0114-show-yourself-iterations.md",
+      "destination": "skills/max-jianji-skill/references/0114-show-yourself-iterations.md",
+      "source_sha256": "063380698e3a7f1b7c1d92c2cbcd4f95946003bffe3de1d59fe4ee3b538669fb"
+    },
+    {
+      "source": "max-rule-system/00｜MAX剪辑系统入口与读取顺序.md",
+      "destination": "skills/max-jianji-skill/references/max-system/00｜MAX剪辑系统入口与读取顺序.md",
+      "source_sha256": "a6904dbc64bf660f9629535d7ea858d146cd6455795b8f384461e98d6549020b"
+    },
+    {
+      "source": "max-rule-system/01｜MAX剪辑画像.md",
+      "destination": "skills/max-jianji-skill/references/max-system/01｜MAX剪辑画像.md",
+      "source_sha256": "28a2cb8def167d79991c7c70ec45ab3d7ceacf44b653d8e6c9ea79d9da5c4315"
+    },
+    {
+      "source": "max-rule-system/02｜MAX账号与受众.md",
+      "destination": "skills/max-jianji-skill/references/max-system/02｜MAX账号与受众.md",
+      "source_sha256": "4b901a8ad1e75dfff0e7478c3e3b29e4537a127eb466ac2d215564aea2ffb118"
+    },
+    {
+      "source": "max-rule-system/03｜MAX粗剪判断标准.md",
+      "destination": "skills/max-jianji-skill/references/max-system/03｜MAX粗剪判断标准.md",
+      "source_sha256": "dbd790614d425bf28ce06916d393dee9a3ae040f90c4075cd23cb9a0ce9936bd"
+    },
+    {
+      "source": "max-rule-system/04｜MAX自有视频案例库.md",
+      "destination": "skills/max-jianji-skill/references/max-system/04｜MAX自有视频案例库.md",
+      "source_sha256": "d49d9364e814788675dfc3c1dfb324e20c14328c59011f7648010f86fc0c0017"
+    },
+    {
+      "source": "max-rule-system/05｜外部对标视频案例库.md",
+      "destination": "skills/max-jianji-skill/references/max-system/05｜外部对标视频案例库.md",
+      "source_sha256": "78e75e111ff0bebd59295d41c5aa4119f05fcc7c9375f43edb65652b2f09259a"
+    },
+    {
+      "source": "max-rule-system/06｜MAX剪辑反馈与校准库.md",
+      "destination": "skills/max-jianji-skill/references/max-system/06｜MAX剪辑反馈与校准库.md",
+      "source_sha256": "51e5c35675262fe44f7d0c59d635f061dc9e05e87c530c14dcbace32efe110fa"
+    },
+    {
+      "source": "max-rule-system/07｜单条视频粗剪任务卡.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜单条视频粗剪任务卡.md",
+      "source_sha256": "b70c85de42eeade8e49cb4623e8d3679eb4e70c1f20b2725a2f22a64afe3aabc"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/README.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/README.md",
+      "source_sha256": "0332b96da76d0290169a3dfafe1a308f40af48db0d6d1c0892dbef0a462f2aa2"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/VR-20260731-懂情感不一定懂展示面.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/VR-20260731-懂情感不一定懂展示面.md",
+      "source_sha256": "6b2433539a6299bb15bb562d01357547c8790a5044ad23e2f3c9f771c7912ecf"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/VR-20260806-形象是男生最有价值的投资.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/VR-20260806-形象是男生最有价值的投资.md",
+      "source_sha256": "b9846d3bb604970ef95c644237c465e1ed917e4d4bc1032408202886b73d472a"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/VR-20260806-照片是最重要的线上资产.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/VR-20260806-照片是最重要的线上资产.md",
+      "source_sha256": "9957959d9e980dc83321d3d9393fc0b9d4fd7fcbfdd40ffee4707bc15bfcfddf"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/VR-20260808-DJI-20260803222804-0053-D.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/VR-20260808-DJI-20260803222804-0053-D.md",
+      "source_sha256": "24064042016423986d53e3e2b607f475d199ca185b63ba266ef313f23e63e4c2"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/VR-20261017-DJI-20261005014039-0059-D.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/VR-20261017-DJI-20261005014039-0059-D.md",
+      "source_sha256": "9feabb4e5ab5993ff09ba7c15df41f247d6a45d12b176aad0feb28adf7b4b28e"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘归档/视频复盘模板.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘归档/视频复盘模板.md",
+      "source_sha256": "3174d0949ea4b17678a8131ab64af3d1916c8ac2a793c0f2cad8fec0a5f678c3"
+    },
+    {
+      "source": "max-rule-system/07｜视频复盘索引.md",
+      "destination": "skills/max-jianji-skill/references/max-system/07｜视频复盘索引.md",
+      "source_sha256": "4fd071562c405644859462a864fd390f09b6fa4675952c7c4b3936ca812108c7"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/NAS镜像清单模板.json",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/NAS镜像清单模板.json",
+      "source_sha256": "d12ff9b1580167bd1915a492b9aee177e812ef4d1eb7a5f4b34daa2881f1cc05"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/README.md",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/README.md",
+      "source_sha256": "1ab96cbb3a6a86fb0934d1b4ac73f5c7b3727218a14210ebfcc185570abe6182"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/governance/current-release.yaml",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/governance/current-release.yaml",
+      "source_sha256": "456f3ab3dcc8335631e44aa0531d9cbcd5214d6148c5c866253d3a536a461dbe"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/governance/releases/MAX-RULES-20260814-001.yaml",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/governance/releases/MAX-RULES-20260814-001.yaml",
+      "source_sha256": "6e05d3e3710233085f9d201ed81b1caf86124de61ba319ce6f21c5eb3f0da321"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/governance/review-batches/RB-20260814-bootstrap.yaml",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/governance/review-batches/RB-20260814-bootstrap.yaml",
+      "source_sha256": "cb50a4789a7601611f7e4eb7c43523e7d16cc523e4249ec76c80a8262fa615a9"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/open/.gitkeep",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/open/.gitkeep",
+      "source_sha256": "c1dfaab420e5da053145052c494e7862ccad2c80631cec4afa82a8eec4de516c"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/processed/.gitkeep",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/processed/.gitkeep",
+      "source_sha256": "522fd07dd9480cfc12aaf51fe24d44ca324bdcc7c9f0a1d568beb1d426cb93dc"
+    },
+    {
+      "source": "max-rule-system/08｜规则候选收件箱/规则候选模板.md",
+      "destination": "skills/max-jianji-skill/references/max-system/08｜规则候选收件箱/规则候选模板.md",
+      "source_sha256": "2b3cb36e8db8b8da0b303694708bc0219f3a005275fc4638274d66f4a7e9a6ce"
+    },
+    {
+      "source": "video-use/.env.example",
+      "destination": "skills/max-jianji-skill/assets/video-use/.env.example",
+      "source_sha256": "269c7c4459e673f2d063d361995fa4b814075fed239ff909098cc188a67e95dc"
+    },
+    {
+      "source": "video-use/.gitignore",
+      "destination": "skills/max-jianji-skill/assets/video-use/.gitignore",
+      "source_sha256": "8210cce3716bb9bf0912105c2295e91154f43381719ce1084f5ad3e5c852ca6e"
+    },
+    {
+      "source": "video-use/LICENSE",
+      "destination": "skills/max-jianji-skill/assets/video-use/LICENSE",
+      "source_sha256": "5afa3d97bf1e6f998d587fa101e3fe0d0c416840b7fe77bcd6ae97690a334631"
+    },
+    {
+      "source": "video-use/README.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/README.md",
+      "source_sha256": "612bca23557cfc4501e80d3ce4babbe086dba77a70fa3a74ae5c0170393ece8f"
+    },
+    {
+      "source": "video-use/SKILL.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/SKILL.md",
+      "source_sha256": "4858712c821b0823d91e2b1686f94e5f14fc41b5160db1ea0060c7f4158af6c3"
+    },
+    {
+      "source": "video-use/helpers/grade.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/grade.py",
+      "source_sha256": "f5df58e81f31c95a621ffba5973fd866f6662fc481a36ebd37a2e68eb81220c2"
+    },
+    {
+      "source": "video-use/helpers/pack_transcripts.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/pack_transcripts.py",
+      "source_sha256": "f9e419def5f0a014d5e1fd16fdad801013ae068854c1d474c3492297e2304f4b"
+    },
+    {
+      "source": "video-use/helpers/render.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/render.py",
+      "source_sha256": "cd62c753345bd18b93415ce49618f4e18e35a10c130e374e67903cf660293d35"
+    },
+    {
+      "source": "video-use/helpers/timeline_view.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/timeline_view.py",
+      "source_sha256": "69aee88e4204f86127740cca9de6a6eaa75a558df1bb07745dd62f69a3c2e9cf"
+    },
+    {
+      "source": "video-use/helpers/transcribe.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/transcribe.py",
+      "source_sha256": "5be26cbdd56b7e683eb794f92da4dc101aabb8875b130251f191fcab8cf631c7"
+    },
+    {
+      "source": "video-use/helpers/transcribe_batch.py",
+      "destination": "skills/max-jianji-skill/assets/video-use/helpers/transcribe_batch.py",
+      "source_sha256": "6bb73c6f64ff1885d9962ececbe771041a2638b5cc78397c3ef14358671795c3"
+    },
+    {
+      "source": "video-use/install.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/install.md",
+      "source_sha256": "9a78c92932864a728cfe80700d1a6bd5a4c4b4cf2d3f4694f3fd53b49fc93394"
+    },
+    {
+      "source": "video-use/poster.html",
+      "destination": "skills/max-jianji-skill/assets/video-use/poster.html",
+      "source_sha256": "9fdded774997b1a502084be4a31ed62d56ad5f0249c939bf6a030da30ac56656"
+    },
+    {
+      "source": "video-use/pyproject.toml",
+      "destination": "skills/max-jianji-skill/assets/video-use/pyproject.toml",
+      "source_sha256": "4b27fdf0275016a5427416ee9a939ed5c8a756af02427394478d416b0909632d"
+    },
+    {
+      "source": "video-use/skills/manim-video/README.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/README.md",
+      "source_sha256": "a30f3ec6105d5b23bc5ec28e8e2809e9ceed49f1fd816570d5b5656d0aa65819"
+    },
+    {
+      "source": "video-use/skills/manim-video/SKILL.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/SKILL.md",
+      "source_sha256": "478ff04a7e3ecf9157b14fc2c24b4ae3fef7460debf27c4ecbe361bf26b0ac29"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/animation-design-thinking.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/animation-design-thinking.md",
+      "source_sha256": "87812340f4756f5e2cc653e6e13ec922562a58483bcd66a5317c19ace5e08220"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/animations.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/animations.md",
+      "source_sha256": "e00bf77a8e17bf457b7669175ac5dc9ffa68e93d35b3f092036a6077892ba51d"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/camera-and-3d.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/camera-and-3d.md",
+      "source_sha256": "36a17d79a0d7b9b11b8e645417f10ebcd2e051228c06867611a3271db7f28ad4"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/decorations.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/decorations.md",
+      "source_sha256": "dfd7bd79a57a0b1860aae5a5d6d282b1b517445457db4d4493519d77c0f568de"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/equations.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/equations.md",
+      "source_sha256": "7408d2688b497f423770e33408d883d54e293a1ba3abb892ebb799a698b50e38"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/graphs-and-data.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/graphs-and-data.md",
+      "source_sha256": "347847bc60f1e5f00ab8ad0f81deede00e8c702b3e1d13a22358e358f370be12"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/mobjects.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/mobjects.md",
+      "source_sha256": "771421e463b526dcc4e2593ae327358ef26919f698c48ee4e32cc7749d32dcda"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/paper-explainer.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/paper-explainer.md",
+      "source_sha256": "ab67495a01e60f2c45afded7c3c80a4e4501c841a562d1a6d305cc74787a4fc4"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/production-quality.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/production-quality.md",
+      "source_sha256": "d9f41d3c58396a94750e6d7c56c9fe5aaa0d067679df059adbe472ceab87d9c0"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/rendering.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/rendering.md",
+      "source_sha256": "8a326d4081d658018fccb8ee4df34be6a945b40466f08f4675924f98649c6ac2"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/scene-planning.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/scene-planning.md",
+      "source_sha256": "c54a8cf6cf864ff5a60d4569e4e285f0fca88e40f3cbff1350b70b099af319e0"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/troubleshooting.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/troubleshooting.md",
+      "source_sha256": "7ee9880cf32ab2b4e1eeaa289464f211e96e9510004635ade59ee6660a4909df"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/updaters-and-trackers.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/updaters-and-trackers.md",
+      "source_sha256": "96c024dce576750a917277e0f4e09135fa7be25ea7e9248b702d36533b22dae5"
+    },
+    {
+      "source": "video-use/skills/manim-video/references/visual-design.md",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/references/visual-design.md",
+      "source_sha256": "6703a312d9e35820a84140343b5c484050874ff19daf5c72789fa00cc1644c99"
+    },
+    {
+      "source": "video-use/skills/manim-video/scripts/setup.sh",
+      "destination": "skills/max-jianji-skill/assets/video-use/skills/manim-video/scripts/setup.sh",
+      "source_sha256": "e7563c458764c1b369c26f874cf94acbe43db8f9a3b1e0d9d735230f5d895bae"
+    },
+    {
+      "source": "video-use/static/timeline-view.svg",
+      "destination": "skills/max-jianji-skill/assets/video-use/static/timeline-view.svg",
+      "source_sha256": "edfbf16f698028ef60ecb29225365e73bb1d55c2c9a49fe17aead275e69722d8"
+    },
+    {
+      "source": "video-use/static/video-use-banner.png",
+      "destination": "skills/max-jianji-skill/assets/video-use/static/video-use-banner.png",
+      "source_sha256": "a22497efc42640c79b921030e430d61f8f4a6005d83475cadeeb877320a76eb7"
+    },
+    {
+      "source": "video-use/uv.lock",
+      "destination": "skills/max-jianji-skill/assets/video-use/uv.lock",
+      "source_sha256": "69bb6df5edef7ee7a99e6a95cc193f8c8f55d53ef12c8604baaa53a07d413820"
+    },
+    {
+      "source": "current-project/docs/MAX视频制作SOP.md",
+      "destination": "skills/max-jianji-skill/references/project/docs/MAX视频制作SOP.md",
+      "source_sha256": "a0da8927661c9b16eb00eb01db829d12f8d59f49111585b5f29fb1b193295617"
+    },
+    {
+      "source": "current-project/docs/视频项目剪辑上层Agent-理解文档.md",
+      "destination": "skills/max-jianji-skill/references/project/docs/视频项目剪辑上层Agent-理解文档.md",
+      "source_sha256": "d1a524264d3aec79ca736cbd0ad53cc29004a6af8e54a33f8f5f55009b75c0e3"
+    },
+    {
+      "source": "current-project/docs/MAX-剪辑工作流与工具路由.md",
+      "destination": "skills/max-jianji-skill/references/project/docs/MAX-剪辑工作流与工具路由.md",
+      "source_sha256": "3bc77d577836085dfde0c56cfaca8e54bcb43315511ea00ffe365c5cce4c3106"
+    },
+    {
+      "source": "current-project/docs/MAX-VideoUse-存储与凭证决策.md",
+      "destination": "skills/max-jianji-skill/references/project/docs/MAX-VideoUse-存储与凭证决策.md",
+      "source_sha256": "0724410e7f7b86c00a1d3ab6455277d2b4459ea5359657e7e5b5ab1f96eed017"
+    },
+    {
+      "source": "current-project/references/max-video-profile.md",
+      "destination": "skills/max-jianji-skill/references/project/references/max-video-profile.md",
+      "source_sha256": "5873727030ec6b64e4bc1a30d1179794296070c3303cf6bf7a10cf408d8983cf"
+    },
+    {
+      "source": "current-project/iteration/calibration-log.md",
+      "destination": "skills/max-jianji-skill/references/project/iteration/calibration-log.md",
+      "source_sha256": "fb239f3c7bd05db18cfb0043d87a073e36c28dcb9c319c6e9e427afda8fa7b7d"
+    },
+    {
+      "source": "current-project/iteration/technical-errata.md",
+      "destination": "skills/max-jianji-skill/references/project/iteration/technical-errata.md",
+      "source_sha256": "cf74d77aa23b48198472809f1cb8f7866dadcbf8896e447d521bf8926040ff25"
+    },
+    {
+      "source": "current-project/templates/交付检查表.md",
+      "destination": "skills/max-jianji-skill/references/project/templates/交付检查表.md",
+      "source_sha256": "21fc65435ab6e29a8d4add1490b7806a2a957f025ab563bb31140e4f2d84851e"
+    },
+    {
+      "source": "current-project/templates/制作需求单.md",
+      "destination": "skills/max-jianji-skill/references/project/templates/制作需求单.md",
+      "source_sha256": "5dc5e1a9a2aad6512ef158a4ca6ea1bd4878883f3012f8a1b320a1d77da7a840"
+    },
+    {
+      "source": "current-project/templates/时间线装配表.md",
+      "destination": "skills/max-jianji-skill/references/project/templates/时间线装配表.md",
+      "source_sha256": "37a3ee96a6b79d24c54981e0dfa9628662ce92a178bdf658cc2b49174deff9fd"
+    },
+    {
+      "source": "current-project/workbench/server/api.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/api.ts",
+      "source_sha256": "507ccfcfb639d5b04e13b78bebf17660cb983f49320976c4662e7b5419ddac28"
+    },
+    {
+      "source": "current-project/workbench/server/audit.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/audit.ts",
+      "source_sha256": "cda28ab84109d29449a5ce06514b155e01aa061ca7a91a091814d8a55f66aaa7"
+    },
+    {
+      "source": "current-project/workbench/server/exporters.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/exporters.ts",
+      "source_sha256": "94e6f69dbd7e890e1b5a44ead501eae92b19457c86fe7780e41adbca7945de69"
+    },
+    {
+      "source": "current-project/workbench/server/feedback.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/feedback.ts",
+      "source_sha256": "7243f48c8ab88964ca8ab2958b86d80072845e044efec851c0046825da4d8727"
+    },
+    {
+      "source": "current-project/workbench/server/index.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/index.ts",
+      "source_sha256": "cc07a234d9fc559f1b45167dd036c55657f1a642f516473a195b75f3c220ba5c"
+    },
+    {
+      "source": "current-project/workbench/server/media.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/media.ts",
+      "source_sha256": "c31c870e33dd8de6bb16d716f6ae628d507f2cc3dcc85372eb813a8827760c8a"
+    },
+    {
+      "source": "current-project/workbench/server/repository.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/repository.ts",
+      "source_sha256": "ce2e52dc6c2e2748a65ff6d22016d1568021fe018c9ea477ad4a2b28ae7f4737"
+    },
+    {
+      "source": "current-project/workbench/server/runtime.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/runtime.ts",
+      "source_sha256": "cacb124cf19337a581b9a4554f54ed31c45ba9cc1e289208b43e0da925251d35"
+    },
+    {
+      "source": "current-project/workbench/server/security.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/security.ts",
+      "source_sha256": "1bbc70103ad150a8941e7b48e9fb007b0313b7a598faf56408da1306d00f76a9"
+    },
+    {
+      "source": "current-project/workbench/server/source-facts.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/source-facts.ts",
+      "source_sha256": "f81491a19ecf5596c246e11461649680fb96eeb6259fa9925a81154d034063b4"
+    },
+    {
+      "source": "current-project/workbench/server/tasks.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/tasks.ts",
+      "source_sha256": "0d8f787be42d06512d83e98d3be15154d9d1676e0bcc0834be446d474b6ebb6e"
+    },
+    {
+      "source": "current-project/workbench/server/transcript.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/server/transcript.ts",
+      "source_sha256": "817f4148954249c3007cb88051789ae2189c3a9f8b510188ceb4c923ff1fdd35"
+    },
+    {
+      "source": "current-project/workbench/shared/layout.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/shared/layout.ts",
+      "source_sha256": "f8d2fb5491767692a2183ecea4462fae6a37befac7d1b5b86b6e89f09cd2c7ba"
+    },
+    {
+      "source": "current-project/workbench/shared/model.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/shared/model.ts",
+      "source_sha256": "f802f76729bd4e7ccb33fbfeeb338ce632a8108fef5fe3166c7227a4de6d571c"
+    },
+    {
+      "source": "current-project/workbench/shared/timeline.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/shared/timeline.ts",
+      "source_sha256": "9b0a2ed56c09744c92e88e0f986ed2c61ce918f6c6ff1211b3ff593d85993625"
+    },
+    {
+      "source": "current-project/workbench/tests/api-origin.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/api-origin.test.ts",
+      "source_sha256": "a3c0d3e43ee93c2ebc8425ee3c6a6cfd101a2489a888691093762f7047642f1f"
+    },
+    {
+      "source": "current-project/workbench/tests/api.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/api.test.ts",
+      "source_sha256": "f90da2283f460ad06778064c824fe552137310cfca05cc94612218873111d934"
+    },
+    {
+      "source": "current-project/workbench/tests/editor.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/editor.test.ts",
+      "source_sha256": "0e496de78ca63efa36b3b2e61c16ca8db7dd26a5858a53e09fe6f26047909266"
+    },
+    {
+      "source": "current-project/workbench/tests/event-labels.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/event-labels.test.ts",
+      "source_sha256": "b40ee8b8d7bffafc3e4e773e863d03288561851bc43b141fa7b8318a9e0f4cca"
+    },
+    {
+      "source": "current-project/workbench/tests/export-form.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/export-form.test.ts",
+      "source_sha256": "f31d60efa6a9e407a5acf52c37c9b2dfb7e8aed36dad8611914cc23f8ab8e011"
+    },
+    {
+      "source": "current-project/workbench/tests/export-interaction.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/export-interaction.test.ts",
+      "source_sha256": "5d18ed5f94200abcd3e895a3ded6e36d4f9d7742766cd4a5bea1e968622b9047"
+    },
+    {
+      "source": "current-project/workbench/tests/export-message.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/export-message.test.ts",
+      "source_sha256": "0d5b3e357b97909ddef8b69306e63c5f7e85ae7a52d783676768625236660bb8"
+    },
+    {
+      "source": "current-project/workbench/tests/exporters.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/exporters.test.ts",
+      "source_sha256": "e6740b4d19f704e66f9652de7795677f1dc777fbd9d8acb461d98e756f963c4f"
+    },
+    {
+      "source": "current-project/workbench/tests/feedback.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/feedback.test.ts",
+      "source_sha256": "393f9247a88ebfdec68dd91100ce16141195af6948ab490087c09e9cc43e3e45"
+    },
+    {
+      "source": "current-project/workbench/tests/layout.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/layout.test.ts",
+      "source_sha256": "e3cc3d75a118c3b243d632af5e08046bd1663065e160994d99a6370d38eaee30"
+    },
+    {
+      "source": "current-project/workbench/tests/media-security.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/media-security.test.ts",
+      "source_sha256": "d1ac263af176978eb8f89db11e798fa36ff868c692113b52ed620f8604dfad0f"
+    },
+    {
+      "source": "current-project/workbench/tests/mime.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/mime.test.ts",
+      "source_sha256": "145dbb52c65942df067e409b87f2be5044cf608991eeaf708523d47d50693a5d"
+    },
+    {
+      "source": "current-project/workbench/tests/onboarding.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/onboarding.test.ts",
+      "source_sha256": "a1533223e674a6da30f5702c1ded6bc2166a4ff55546498447b09d81503f2faa"
+    },
+    {
+      "source": "current-project/workbench/tests/playback.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/playback.test.ts",
+      "source_sha256": "00d92193432c2c61d3f38431372bd6178ac25684a32a5ee75c9788545be448c6"
+    },
+    {
+      "source": "current-project/workbench/tests/repository.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/repository.test.ts",
+      "source_sha256": "e47a6692fa87c87a752a9863cd64d3cfe076e3486e67bb7e92036e6a39ca98ae"
+    },
+    {
+      "source": "current-project/workbench/tests/runtime.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/runtime.test.ts",
+      "source_sha256": "3b7e6b80cc1a3e25891b0b90d1e607399fc27e88a89323f9e05d59955f6c3c81"
+    },
+    {
+      "source": "current-project/workbench/tests/tasks.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/tasks.test.ts",
+      "source_sha256": "c66ce588e63e94b6a31778e04e4091d175fad966fe89198a6f896e11a3e4427e"
+    },
+    {
+      "source": "current-project/workbench/tests/timeline.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/timeline.test.ts",
+      "source_sha256": "46f0206b463b6aaa17a75973862ad190d0325c3e2a47e6aa68226764a79e82a6"
+    },
+    {
+      "source": "current-project/workbench/tests/transcript-binding.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/transcript-binding.test.ts",
+      "source_sha256": "c426c2e5c042af39c8b64bf5d60722cfcb687f5aec7ebabb40ce4350ded646f4"
+    },
+    {
+      "source": "current-project/workbench/tests/transcript.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/transcript.test.ts",
+      "source_sha256": "feca16318f105a1bad9ebc126ac3015d974f9ca626990807a0575c5de04f9bbf"
+    },
+    {
+      "source": "current-project/workbench/tests/zoom.test.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/tests/zoom.test.ts",
+      "source_sha256": "165f9c909103ab205f3917d8781857ef8a77ada8b401411a4439e6ef1fe29e6a"
+    },
+    {
+      "source": "current-project/workbench/vite.config.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/vite.config.ts",
+      "source_sha256": "86c5b64909cfb28f2f4225d22a88b79b17560f9cf877141774c8e059da5327ad"
+    },
+    {
+      "source": "current-project/workbench/vitest.config.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/vitest.config.ts",
+      "source_sha256": "bc2d1fed6c561e615bbf3e58a1a2c745257e2d522be4ae64d3bc7bcc4ddb2d77"
+    },
+    {
+      "source": "current-project/workbench/web/App.tsx",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/App.tsx",
+      "source_sha256": "e3f69d54f6d5e04a91d2afe166ed2318fb65540235af8bae50b7558fc7466880"
+    },
+    {
+      "source": "current-project/workbench/web/api-origin.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/api-origin.ts",
+      "source_sha256": "1ec0d1a6448ad3563a3df7d88195b48233e9bec42677dd8c5f56253e1f512dc0"
+    },
+    {
+      "source": "current-project/workbench/web/editor.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/editor.ts",
+      "source_sha256": "36d358d0148eeaf4dbb038b2632a6df3f97c005d326b28d1737893bd07d6d9ea"
+    },
+    {
+      "source": "current-project/workbench/web/export-form.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/export-form.ts",
+      "source_sha256": "4360da25c695c43dc8236cd3ba1099880a679f2d6c6863317df13724872bc9eb"
+    },
+    {
+      "source": "current-project/workbench/web/export-interaction.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/export-interaction.ts",
+      "source_sha256": "c8f26fce90604be0c8912f514f0edd4a63afde49aabdbe4afa13505749dc17f3"
+    },
+    {
+      "source": "current-project/workbench/web/export-message.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/export-message.ts",
+      "source_sha256": "2b95ab47ee9e352798d76eba963e09caa73e0ab684204fedabeee6c9e25448d1"
+    },
+    {
+      "source": "current-project/workbench/web/index.html",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/index.html",
+      "source_sha256": "90b92641c771d9fbc8bc3f8e5a7183a594d7d322130174ef604c9df937e339ab"
+    },
+    {
+      "source": "current-project/workbench/web/main.tsx",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/main.tsx",
+      "source_sha256": "bbe3633f19d4fccb08f04be847c6fd859c409daccb8a8e75b095c045eb1fcee1"
+    },
+    {
+      "source": "current-project/workbench/web/playback.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/playback.ts",
+      "source_sha256": "937bc14de28e4d5c7a13c5a680e2caa4ccfe9c0f179b42104af5162705ce42bd"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/LICENSE.txt",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/LICENSE.txt",
+      "source_sha256": "db97876001a8a0dc606990dd3d77ce76c91964446ecd94b180ef87923e4940f7"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/file-text.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/file-text.svg",
+      "source_sha256": "3a67d4a9a92eda88a4d534734531617bda311595762c022858fc3ec28f5f0ae9"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/film.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/film.svg",
+      "source_sha256": "40ad7ce7fc45bbcea8af8201069302cc616cce857492282a257b2a35609b4aca"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/redo-2.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/redo-2.svg",
+      "source_sha256": "050f160328011f28717586cd664b6c0cefd798c6fe5c0bae45bb07bf0bbda8b3"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/rotate-ccw.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/rotate-ccw.svg",
+      "source_sha256": "a2003347c21ace78a559d54e60b12391efccc75d60c71fd15feed54190cefc2b"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/save.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/save.svg",
+      "source_sha256": "500ca66f3492e77f55dfdc3e1eba9ffa25a8f2f17a6d8ac3d0f8eaec6fc66cc5"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/scissors.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/scissors.svg",
+      "source_sha256": "7cdc195d3a2aaad179699b4a75e12b36a72b74f5dc93e4ad6b472c91c2e66b53"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/search.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/search.svg",
+      "source_sha256": "96e9839251398fa8734f41af3164597d5db668985895cb9773a9b2e3d8a0a369"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/sparkles.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/sparkles.svg",
+      "source_sha256": "2e596048db1cb50d8b7c2bd8159770910a0f50653606d00519ab96b1e710510e"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/trash-2.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/trash-2.svg",
+      "source_sha256": "a74b04b1a9a51cccbbbf6b598970d9a2929480e8bdddc9b7a104dd18631d1699"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/undo-2.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/undo-2.svg",
+      "source_sha256": "b9ce20499a019676b7ecd229b2556c1b9516d1cae01b99387fdd0732094e7483"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/zoom-in.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/zoom-in.svg",
+      "source_sha256": "226572a2fad064f46211ddca720af3aaaa98bd490af94bc94f05075e5c88a424"
+    },
+    {
+      "source": "current-project/workbench/web/public/icons/zoom-out.svg",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/public/icons/zoom-out.svg",
+      "source_sha256": "abacf0546e28374da517b82cffe91614c6e1f29197f8a677d91f092708883264"
+    },
+    {
+      "source": "current-project/workbench/web/styles.css",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/styles.css",
+      "source_sha256": "387db49ea9ec6ff4a7a2236f26b1abedabc2914ab347ce9553ec4ac5696a74dc"
+    },
+    {
+      "source": "current-project/workbench/web/zoom.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/workbench/web/zoom.ts",
+      "source_sha256": "714d39f0254f1463b839850a3d71622ec199c8537d3de86c8423dbc5463dcbda"
+    },
+    {
+      "source": "current-project/src/Composition.tsx",
+      "destination": "skills/max-jianji-skill/assets/runtime/src/Composition.tsx",
+      "source_sha256": "ae74b8fbdded0ba8bdc9515e7bd9a44e38fff0b14d7c45b6ed9d2e2f0926c9f7"
+    },
+    {
+      "source": "current-project/src/Root.tsx",
+      "destination": "skills/max-jianji-skill/assets/runtime/src/Root.tsx",
+      "source_sha256": "ecf3b495578c12713eea9d8f90cbdc5fdf70ee9c8fabba9834ed4deec340e885"
+    },
+    {
+      "source": "current-project/src/index.css",
+      "destination": "skills/max-jianji-skill/assets/runtime/src/index.css",
+      "source_sha256": "42070e0b45bb201b2b838a52aaaa6e965f964e0b542d97f1fe517fe59c4b75a8"
+    },
+    {
+      "source": "current-project/src/index.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/src/index.ts",
+      "source_sha256": "957e481dd33a29b4a55ae0e95dbf763b7e48c37c427ca4bd1275faf34bc07a74"
+    },
+    {
+      "source": "current-project/package.json",
+      "destination": "skills/max-jianji-skill/assets/runtime/package.json",
+      "source_sha256": "9d3475b8e5df7bf680a3f60aa901ff97b19edfd9fb442839fbce58d6fa80808f"
+    },
+    {
+      "source": "current-project/package-lock.json",
+      "destination": "skills/max-jianji-skill/assets/runtime/package-lock.json",
+      "source_sha256": "da564b46e53fa8f1f8517d45d1c1610b0803d2f66c56a143143028fbdfbc056a"
+    },
+    {
+      "source": "current-project/tsconfig.json",
+      "destination": "skills/max-jianji-skill/assets/runtime/tsconfig.json",
+      "source_sha256": "c1d80a41d620a8ee212416c7da959c121511df8cf84af05eccf6418761ee41a7"
+    },
+    {
+      "source": "current-project/tsconfig.workbench.json",
+      "destination": "skills/max-jianji-skill/assets/runtime/tsconfig.workbench.json",
+      "source_sha256": "41fa68dd03b33f10de1659bca2720e9e8ba334cb7e11050c4decae473aea21b7"
+    },
+    {
+      "source": "current-project/remotion.config.ts",
+      "destination": "skills/max-jianji-skill/assets/runtime/remotion.config.ts",
+      "source_sha256": "e0c35bef34d60e1b6a23a305842c8e7ef574f760f55fc66e5d4834632bc204e8"
+    },
+    {
+      "source": "current-project/eslint.config.mjs",
+      "destination": "skills/max-jianji-skill/assets/runtime/eslint.config.mjs",
+      "source_sha256": "7f2ca640409fd597965bedf929073b9a74f143643e1711150c4cac3b6ec5c80d"
+    }
+  ]
+}
